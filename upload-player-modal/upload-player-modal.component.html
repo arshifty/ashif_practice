@@ -1,0 +1,164 @@
+<div class="company_row" *ngIf="!upload_done">
+  <div class="modal-header">
+    <h3 class="modal-title">Upload Players</h3>
+    <button type="button" class="close" (click)="onNoClick()"> <span aria-hidden="true">&times;</span> </button>
+  </div>
+  <div class="add_row modal-body">
+    <tabset class="management_tab">
+      <!-- Tab 1--> 
+      <ng4-loading-spinner [loadingText]="'Verifying Data, Please Wait...'"></ng4-loading-spinner>
+      <tab heading="Add Player Details" #staticTabs>
+        <div class="tab_row pb-0">
+          <div class="form-group upload_box">
+            <label for="file"><span>Browse</span></label>
+            <input type="file" id="file" (change)="onFileSelect($event)" placeholder="">
+            <input type="text" id="fakeInput" [(ngModel)]="file_name" />
+            <div class="player_note" *ngIf="verifying_msz">Verifying Data, Please Wait...</div>
+            <p class="player_note" *ngIf="file_name">{{error_logs.length? error_logs.length + ' invalid row found.': ''}} </p> 
+          </div>
+          
+          <div class="table-responsive smart_table">
+            <table *ngIf="error_logs.length" class="table">
+              <thead>
+                <tr>
+                  <th class="text-center">Row</th>
+                  <th>Message</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let error of error_logs; let i = index">
+                <tr *ngIf="i < 5">
+                  <td class="text-center">{{error.row}}</td>
+                  <td>{{error.message}}</td>
+                </tr>
+                <tr *ngIf="i >= 5" class="border-top-0">
+                  <td class="text-center" *ngIf="expanded == true">{{error.row}}</td>
+                  <td *ngIf="expanded == true">{{error.message}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>  
+          <span class="show-more" (click)="expanded = true" *ngIf="error_logs.length > 5 && expanded != true">Show All</span>
+          <button type="button" class="theme-button-2 upload" *ngIf="isValid" [disabled]="waiting" (click)="upload()">Upload</button>
+        </div>
+      </tab>
+      <!-- Tab 2-->
+      <tab heading="SMS Notification">
+        <div class="tab_row">
+          <div class="notification_box">
+            <h4 class="border-0">SMS Notification
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="sms_n" name="sms_required"
+                  [(ngModel)]="notification.sms_required">
+                <label class="custom-control-label" for="sms_n"></label>
+              </div>
+            </h4>
+          </div>
+          <div class="notification_box">
+            <h4 style="display: block;">Message Content
+              <div class="custom_tooltip d-inline-block">
+                <i class="fas fa-info-circle"></i>
+                <ul class="tooltip_list" style="min-width: 300px;">
+                  <li>Available Variables</li>
+                  <li><span>[first_name]</span> - User first name</li>
+                  <li><span>[last_name] </span> - User second name</li>
+                  <li><span>[email] </span> - User email </li>
+                  <li><span>[password_create_link]</span> - Password create for user/Active user </li>
+                </ul>
+              </div>
+            </h4>
+
+            <div class="form-group textarea">
+              <textarea class="form-control" [(ngModel)]="templateObj.sms_content" name="sms_text" maxlength="160"
+                placeholder="" #sms_content></textarea>
+              <!-- <h6 *ngIf="notification.sms_required &&  sms_text">Sms Content Required</h6> -->
+              <h6 *ngIf="notification.sms_required && sms_content.value.length<1" style="color: red; width:200px;"
+                align="end">SMS Content is Required.</h6>
+            </div>
+          </div>
+          <div class="form-group sms_cost">
+            <h6>SMS Cost:</h6>
+            <input class="form-control" placeholder="€{{sms_cost | number:'1.2-2'}}" required [disabled]="true">
+            <!-- <h6>SMS Cost is Required.</h6>  -->
+          </div>
+          <div class="next_prev">
+            <button class="theme-button-2" type="button" (click)="upload()">Invite</button>
+          </div>
+        </div>
+      </tab>
+      <!-- Tab 3-->
+      <tab heading="Email Notification">
+        <div class="tab_row">
+          <div class="form-group">
+            <div class="notification_box">
+              <h4 class="border-0">Email Notification
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="email_n" name="email_required"
+                    [(ngModel)]="notification.email_required">
+                  <label class="custom-control-label" for="email_n"></label>
+                </div>
+              </h4>
+            </div>
+            <input class="form-control" placeholder="Email Notification" [(ngModel)]="templateObj.email_head"
+              name="email_head" required>
+            <h6 *ngIf="submitted && !templateObj.email_head">Email Notification is Required.</h6>
+          </div>
+          <div class="notification_box">
+            <h4 style="display: block;">Message Content
+              <div class="custom_tooltip d-inline-block">
+                <i class="fas fa-info-circle"></i>
+                <ul class="tooltip_list" style="min-width: 300px;">
+                  <li>Available Variables</li>
+                  <li><span>[first_name]</span> - User first name</li>
+                  <li><span>[last_name] </span> - User second name</li>
+                  <li><span>[email] </span> - User email </li>
+                  <li><span>[password_create_link]</span> - Password create for user/Active user </li>
+                </ul>
+              </div>
+            </h4>
+            <div class="form-group textarea">
+              <textarea class="form-control" name="email_text" [(ngModel)]="templateObj.email_text" placeholder=""
+                minlength="1"></textarea>
+              <h6 *ngIf="templateObj.email_text.length<1" style="color: red; width:200px;">Email Content is Required.
+              </h6>
+              <h6 *ngIf="templateObj.email_text.length<1">Email Content is Required.</h6>
+            </div>
+          </div>
+          <div class="next_prev">
+            <!-- <button class="theme-button-2 next" type="button" (click)="goTo(1)">Previous</button> -->
+            <button class="theme-button-2" type="button" (click)="upload()">Invite</button>
+          </div>
+        </div>
+      </tab>
+    </tabset>
+  </div>
+</div>
+
+
+<div class="company_row" *ngIf="upload_done">
+  <div class="modal-header">
+    <h3 class="modal-title">Upload Players</h3>
+    <button type="button" class="close" (click)="onNoClick()"> <span aria-hidden="true">&times;</span> </button>
+  </div>
+  <div class="add_row modal-body">
+    <tabset class="management_tab">
+      <!-- Tab 1-->
+      <tab heading="Add Player Details">
+        <div class="tab_row">
+          <p> {{player_uploaded}} Players succesfully Uploaded</p>
+          <button type="button" class="button-submit upload" (click)="onNoClick()">Complete</button>
+        </div>
+      </tab>
+      <!-- Tab 2-->
+      <tab heading="SMS Notification">
+        <div class="tab_row">
+
+        </div>
+      </tab>
+      <!-- Tab 3-->
+      <tab heading="Email Notification">
+        <div class="tab_row">
+        </div>
+      </tab>
+    </tabset>
+  </div>
+</div>
