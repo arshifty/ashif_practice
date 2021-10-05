@@ -1,0 +1,24 @@
+<ng4-loading-spinner [timeout]="50000"> </ng4-loading-spinner>
+<div class="company_tittle">
+  <h3>Upload Modal</h3>
+  <a (click)="onNoClick()">
+    <mat-icon fontSet="fas" fontIcon="fa-times"></mat-icon>
+  </a>
+</div>
+<div class="company_row">
+  <div class="form-group upload_box">
+    <label for="file"><span>Browse</span></label>
+    <input type="file" id="file" (change)="onFileSelect($event)" placeholder="">
+    <input type="text" id="fakeInput" [(ngModel)]="file_name" />
+  </div>
+  <div *ngIf="inExistEmails.length>0">
+    <h4>Follwing email/phone doesn't exist.</h4>
+    <table class="table">
+      <tr *ngFor="let mail of inExistEmails; let i=index">
+        <td>{{i+1}}.</td>
+        <td>{{mail.email?mail.email: mail.phone}}</td>
+      </tr>
+    </table>
+  </div>
+  <button type="button" class="button-submit upload" (click)="upload()">Upload</button>
+</div>

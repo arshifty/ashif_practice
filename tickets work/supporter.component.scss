@@ -1,0 +1,78 @@
+ 
+.company_tittle{
+    padding: 10px 30px;
+  }
+  
+
+  /deep/ .mat-form-field .mat-form-field-wrapper {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: block;
+
+    .mat-form-field-flex {
+      margin: 0;
+      padding: 0;
+
+      .mat-form-field-infix {
+        background: #FAFBFC;
+        border: 1px solid #DAE4EB;
+        border-radius: 3px;
+        padding: 2px 15px 0;
+        line-height: 40px;  
+        .mat-select-arrow-wrapper {
+          transform: none !important;
+        }
+      }
+    } 
+  }
+  tr.mat-header-row{
+      height: auto !important;
+  }
+  .smart_table {
+    .table {
+      .action_header{
+        width: 130px;
+        text-align: center;
+      }
+    }
+  }
+  .pages_area .pages_inner{
+    min-height: 80vh;  
+    .search_with{
+      .form-group{
+        /deep/.mat-form-field{
+          position: relative;
+          .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix{
+            padding-left: 35px;
+          }
+          mat-icon{
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: #263843;
+            font-size: 15px;
+          }
+        }
+
+      }
+    }
+  }
+  
+  @media (max-width: 767px){
+    .pages_area {
+      padding: 0;
+      padding-top: 95px;
+      .container {
+          max-width: 100%;
+          padding: 0;
+      }
+    }
+  
+    .smart_table{
+      .table {
+        width: 688px;
+      }
+    }
+  }
+  

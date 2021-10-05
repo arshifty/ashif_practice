@@ -1,0 +1,32 @@
+<div class="company_tittle">
+  <h3>Update Prize</h3>
+  <a (click)="onNoClick()">
+    <mat-icon fontSet="fas" fontIcon="fa-times" (click)="onNoClick()"></mat-icon>
+  </a>
+</div> 
+<form class="company_row" [formGroup]="prizeUpdateForm" (ngSubmit)="submit()">
+  <div class="form-group">
+    <h6>Draw Date</h6>
+    <mat-form-field class="full-width-input date_field" appearance="outline">
+      <input matInput [matDatepicker]="to_date_picker"  formControlName="draw_date">
+      <mat-datepicker-toggle matSuffix [for]="to_date_picker"></mat-datepicker-toggle>
+      <mat-datepicker #to_date_picker></mat-datepicker>
+      <mat-error class="error text-danger"
+        *ngIf="(submitted || prizeUpdateForm.controls['draw_date'].touched) && prizeUpdateForm.controls['draw_date'].errors && prizeUpdateForm.controls['draw_date'].errors['required']">
+        Draw Date is required.
+      </mat-error>
+    </mat-form-field> 
+  </div>
+  <div class="form-group"> 
+    <h6>Draw Time</h6> 
+    <mat-form-field class="full-width-input" appearance="outline"> 
+      <input  matInput aria-label="default time" [ngxTimepicker]="defaultTime" [format]=24 placeholder="Draw Time" formControlName="draw_time">
+      <ngx-material-timepicker #defaultTime ></ngx-material-timepicker> 
+      <mat-error class="error text-danger"
+        *ngIf="(submitted || prizeUpdateForm.controls['draw_time'].touched) && prizeUpdateForm.controls['draw_time'].errors && prizeUpdateForm.controls['draw_time'].errors['required']">
+        Draw Time is required.
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <button class="button-submit" [disabled]="wait">{{wait? 'Please wait..': 'Update'}}</button>
+</form>

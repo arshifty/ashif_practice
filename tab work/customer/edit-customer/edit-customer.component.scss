@@ -1,0 +1,106 @@
+@import '../add-customer/add-customer.component.scss';
+.pages_area {
+  position: relative;
+  overflow: hidden;
+  .page_container {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 30px;
+  }
+  .invite_button {
+    font-size: 40px;
+    border: 0;
+    background: transparent;
+    color: red;
+  }
+}
+.mat-checkbox-checked {
+  /deep/.mat-checkbox-background {
+    background-color: #000000;
+  }
+}
+@media (max-width: 1199px) {
+  .pages_area .page_container {
+    padding: 0 15px;
+    .upload_player {
+      max-width: 350px;
+      margin-top: 30px;
+    }
+  }
+}
+@media (max-width: 767px) {
+  .pages_area .page_container {
+    padding: 0;
+    .pages_inner .company_row {
+      padding: 25px 0;
+    }
+    .upload_player {
+      max-width: 100%;
+    }
+  }
+}
+.mail_promotional {
+  margin-bottom: 50px;
+  margin-top: 20px;
+  max-width: 250px;
+  h4 {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 25px;
+    color: #263843;
+  }
+  .promotional_img {
+    background: #ebeef3;
+    border: 7px solid #ffffff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    img {
+      max-width: 100%;
+      height: 250px;
+      width: 100%;
+    }
+  }
+  .remove_text {
+    font-size: 15px;
+    color: #333c4a;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    &:hover,
+    &:focus {
+      color: #2993c8;
+    }
+  }
+  .promotional_bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    label {
+      border-radius: 3px;
+      background: #ebeef3;
+      border: 1px solid #2993c8;
+      min-width: 110px;
+      line-height: 40px;
+      text-align: center;
+      cursor: pointer;
+      display: inline-block;
+      height: 40px;
+      transition: all 0.3s linear;
+      span {
+        color: #2993c8;
+        font-weight: bold;
+        font-size: 15px;
+      }
+      &:hover,
+      &:focus {
+        background: #2993c8;
+        span {
+          color: #ffffff;
+        }
+      }
+    }
+    input {
+      display: none;
+    }
+  }
+}

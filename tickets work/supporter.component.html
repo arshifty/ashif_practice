@@ -1,0 +1,92 @@
+<ng4-loading-spinner [timeout]="50000"> </ng4-loading-spinner>
+<div class="pages_area">
+  <div class="container">
+    <div class="pages_inner">
+      <div class="company_tittle">
+        <h3>Supporters</h3> 
+        <div class="form-group">
+          <mat-form-field appearance="outline">
+            <mat-select placeholder="Select Club" name="club" [(ngModel)]="selected"
+              (ngModelChange)="getSupporterData()">
+              <mat-option *ngFor="let club of clubs" [value]="club">
+                {{club.org_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="company_row">
+        <div class="search_with row">
+          <div class="form-group col-lg-4 col-sm-6">
+            <mat-form-field class="full-width-input" appearance="outline">
+              <mat-icon fontSet="fas" fontIcon="fa-search" matPrifix></mat-icon>
+              <input matInput placeholder="Name" [(ngModel)]="search_criteria.first_name" (keyup)="searchSupporter()"
+                required>
+
+            </mat-form-field>
+          </div>
+          <div class="form-group col-lg-4 col-sm-6">
+            <mat-form-field class="full-width-input" appearance="outline">
+              <mat-icon fontSet="fas" fontIcon="fa-search" matPrifix></mat-icon>
+              <input matInput placeholder="Email" [(ngModel)]="search_criteria.email" (keyup)="searchSupporter()"
+                required>
+            </mat-form-field>
+          </div>
+          <div class="form-group col-lg-4 col-sm-6">
+            <mat-form-field class="full-width-input" appearance="outline">
+              <mat-icon fontSet="fas" fontIcon="fa-search" matPrifix></mat-icon>
+              <input matInput placeholder="Phone" [(ngModel)]="search_criteria.phone" (keyup)="searchSupporter()"
+                required>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="add_user_table">
+          <div class="table-responsive smart_table">
+            <table mat-table [dataSource]="dataSource" class="table">
+              <ng-container matColumnDef="first_name">
+                <th mat-header-cell *matHeaderCellDef> First Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.first_name}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="last_name">
+                <th mat-header-cell *matHeaderCellDef> Lest Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.last_name}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef> Email </th>
+                <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+              </ng-container>
+              <ng-container matColumnDef="phone">
+                <th mat-header-cell *matHeaderCellDef> Phone </th>
+                <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef class="action_header"> Action </th>
+                <td mat-cell *matCellDef="let element" class="action_header">
+                  <span><i class="fas fa-ellipsis-v" [matMenuTriggerFor]="more_action"></i></span>
+                  <mat-menu #more_action="matMenu">
+                    <button mat-menu-item (click)="transactionsModal(element)">
+                      <span>Transitions</span>
+                    </button>
+                    <button mat-menu-item (click)="ticketsModal(element)">
+                      <span>Tickets</span>
+                    </button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+              [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

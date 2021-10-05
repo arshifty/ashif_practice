@@ -1,0 +1,139 @@
+@import "../transactions/transactions.component.scss";
+.accordion_inner{
+    /deep/.mat-expansion-indicator{
+        display: none;
+    }
+    .description_title{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        list-style: none;
+        padding: 0;
+        margin: 0; 
+    }
+    .description_list{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        border-top: 1px solid #EFF2F4;
+        padding: 5px 0;
+        li{
+            display: flex;
+            align-items: center;
+            span{
+                cursor: pointer;
+                margin-right: 10px;
+                &:hover, &:focus{
+                    color: #2993C8;
+                }
+                &.times{
+                    color: #FF3F41;
+                }
+            }
+            input{
+                box-shadow: none;
+                outline: none;
+                background: #FAFBFC;
+                border: 1px solid #DAE4EB;
+                border-radius: 3px;
+                padding: 0 5px;
+                line-height: 25px;
+                width: 50px;
+            }
+            .input-edit{
+                display: flex;
+                position: relative;
+            }
+            .input-control{
+                position: absolute;
+                top: -4px;
+                right: 0;
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+    mat-panel-description{
+        margin: 0;
+    }
+    .ball_list{
+        flex-direction: column;
+        .ball-inner{
+            display: flex;
+            align-items: center;
+            padding-top: 10px;
+            width: 100%;
+            justify-content: flex-end;
+        }
+    }
+    .ball{
+        display: flex;
+        padding: 0;
+        li{
+            border: 1px solid #2993c8;
+            line-height: 40px;
+            text-align: center;
+            color: #2993c8;
+            width: 40px;
+            height: 40px;
+            font-weight: 600;
+            font-size: 15px;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            margin-right: 10px;
+            display: inline-block;
+            position: relative;
+            input{
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                border: 0;
+                line-height: 40px;
+                text-align: center;
+                color: #2993c8;
+                width: 40px;
+                height: 40px;
+                font-weight: 600;
+                font-size: 15px; 
+                padding: 0;
+                border-radius: 10px;
+            }
+        }
+    }
+    .prize-list{
+        li{
+            font-size: 18px;
+            padding-bottom: 5px;
+            font-weight: bold;
+
+        }
+    }
+}
+
+@media (max-width: 550px){
+    .accordion_inner .dl-last{
+        display: block;
+        .ball li{
+            line-height: 30px;
+            width: 30px;
+            height: 30px;
+            .input{ 
+                line-height: 30px;
+                width: 30px;
+                height: 30px;
+            }
+        }
+    }
+}
+
+.not-found-text {
+    text-align: center;
+    font-weight: bold;
+    padding-top: 20px;
+}

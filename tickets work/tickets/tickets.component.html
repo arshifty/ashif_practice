@@ -1,0 +1,129 @@
+<ng4-loading-spinner [timeout]="50000"> </ng4-loading-spinner>
+
+<div class="company_tittle">
+  <h3>Tickets</h3>
+  <a (click)="onNoClick()">
+    <mat-icon fontSet="fas" fontIcon="fa-times"></mat-icon>
+  </a>
+</div>
+
+<div class="company_row">
+  <div class="row">
+    <div class="form-group col-md-4">
+      <h6>Supporter Name</h6>
+      <h3>{{data.supporter.first_name}} {{data.supporter.last_name}}</h3>
+    </div>
+    <div class="form-group col-md-4">
+      <h6>Club Name</h6>
+      <h3>{{data.club_name}}</h3>
+    </div>
+  </div>
+  <mat-accordion class="accordion_inner" *ngIf="tickets && tickets.length">
+    <mat-expansion-panel *ngFor="let ticket of tickets; let j = index">
+      <mat-expansion-panel-header>
+        <mat-panel-title> {{ ticket.created_at | date: 'dd/MM/yyyy hh:mm' }} </mat-panel-title>
+        <mat-panel-description>
+          <ul class="description_title">
+            <li>{{ ticket.lottery_type | titlecase }}</li>
+            <li>€{{ ticket.sales_info.net_amount | number : '1.2-2'}}</li>
+          </ul>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <ul class="description_list">
+        <li>Ticket No</li>
+        <li>{{ ticket.ticket_no }}</li>
+      </ul>
+      <ul class="description_list">
+        <li>Total Game</li>
+        <li>
+          <span class="edit" *ngIf="!ticket.gameNumSelected && (ticket.jackpot_id?.is_alive || ticket.prize_id?.is_alive)" (click)="ticket.gameNumSelected = true"><i
+              class="fas fa-pencil-alt"></i></span>
+          <div class="input-edit">
+            <div *ngIf="!ticket.gameNumSelected">{{ ticket.total_number_of_game }}</div>
+            <div class="input-control" *ngIf="ticket.gameNumSelected">
+              <span><i class="fas fa-save" (click)="updateTicket(ticket, j, 'gameNumSelected')"></i></span>
+              <span class="times" (click)="ticket.gameNumSelected = false"><i class="fas fa-times"></i></span>
+              <input type="text" name="total_game_{{j}}" [(ngModel)]="ticket.total_number_of_game">
+            </div>
+          </div>
+        </li>
+      </ul>
+      <ul class="description_list">
+        <li>Game Remain</li>
+        <li>
+          <span class="edit" *ngIf="!ticket.gameRmnSelected && (ticket.jackpot_id?.is_alive || ticket.prize_id?.is_alive)" (click)="ticket.gameRmnSelected = true"><i
+              class="fas fa-pencil-alt"></i></span>
+          <div class="input-edit">
+            <div *ngIf="!ticket.gameRmnSelected">{{ ticket.number_of_game_remaining }}</div>
+            <div class="input-control" *ngIf="ticket.gameRmnSelected">
+              <span><i class="fas fa-save" (click)="updateTicket(ticket, j, 'gameRmnSelected')"></i></span>
+              <span class="times" (click)="ticket.gameRmnSelected = false"><i class="fas fa-times"></i></span>
+              <input type="text" name="game_remaining_{{j}}" [(ngModel)]="ticket.number_of_game_remaining">
+            </div>
+          </div>
+        </li>
+      </ul>
+      <ul class="description_list">
+        <li>Auto Play</li>
+        <li>
+          <span class="edit" *ngIf="ticket.auto_play && !ticket.ap_selected && (ticket.jackpot_id?.is_alive || ticket.prize_id?.is_alive)" (click)="ticket.ap_selected = true"><i
+              class="fas fa-pencil-alt"></i></span>
+          <div class="input-edit">
+            <div *ngIf="!ticket.ap_selected">
+              {{ ticket.purchase_type == 'every_week' ? 'yes' : 'no' }}
+            </div>
+            <div class="input-control" *ngIf="ticket.ap_selected">
+              <span><i class="fas fa-check" (click)="updateTicket(ticket, j, 'ap_selected')"></i></span>
+              <span class="times" (click)="ticket.ap_selected = false"><i class="fas fa-times"></i></span>
+              <mat-slide-toggle name="auto_play_{{j}}" [(ngModel)]="ticket.auto_play"></mat-slide-toggle>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <ul class="description_list dl-last" *ngIf="ticket.lottery_type == 'lotto'">
+        <li>Tickets</li>
+        <li class="ball_list">
+          <div class="ball-inner" *ngFor="let line of ticket.lines; let i = index">
+
+            <ul class="ball">
+              <li *ngFor="let number of line.numbers; let k = index">
+                {{number.val}}
+                <input name="number_{{j}}_{{i}}_{{k}}" [(ngModel)]="number.val" *ngIf="line.selected" type="number">
+              </li>
+            </ul>
+            <div class="input-control-2">
+              <span *ngIf="!line.selected && (ticket.jackpot_id?.is_alive)" (click)="line.selected = true"><i
+                  class="fas fa-pencil-alt"></i></span>
+              <span *ngIf="line.selected"><i class="fas fa-save"
+                  (click)="updateTicket(ticket, j, 'ticket', line, i)"></i></span>
+              <span class="times" *ngIf="line.selected" (click)="line.selected = false"><i
+                  class="fas fa-times"></i></span>
+            </div>
+          </div>
+
+        </li>
+      </ul>
+      <ul class="description_list dl-last" *ngIf="ticket.lottery_type == 'prize'">
+        <li>Tickets</li>
+        <li class="ball_list">
+          <div class="ball-inner">
+            <ul class="prize-list">
+              <li *ngFor="let line of ticket.tickets; let l = index">
+                Line {{l+1}}: {{line}}
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <mat-paginator *ngIf="notFoundMessageStatus" #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true"
+    [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
+  </mat-paginator>
+
+  <div *ngIf="!notFoundMessageStatus" class="not-found-text">
+    <p>No Tickets Found</p>
+  </div>
+
+</div>

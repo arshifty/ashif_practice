@@ -1,0 +1,70 @@
+.company_tittle {
+  padding: 0;
+  padding-bottom: 10px;
+
+  a {
+    cursor: pointer;
+    line-height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    display: block;
+    text-align: center;
+    color: #ffffff;
+    background: #6c7275;
+  }
+}
+.company_row {
+  padding: 0;
+  padding-top: 20px;
+}
+.upload_box {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #eff2f4;
+  position: relative;
+  margin-bottom: 20px;
+  height: 63px;
+  border-radius: 3px;
+  label {
+    line-height: 50px;
+    width: 160px;
+    border-radius: 3px;
+    text-align: center;
+    color: #ffffff;
+    background: #95bf3e;
+    font-size: 15px;
+    display: block;
+    cursor: pointer;
+    position: absolute;
+    right: 7px;
+    top: 5px;
+  }
+  input {
+    line-height: 47px;
+    width: 100%;
+  }
+}
+
+input#file {
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+input#fakeInput {
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+  border: initial;
+  height: 3em;
+}
+
+.upload {
+  background: #fff !important;
+  border: 1px solid #95bf3e !important;
+  color: #95bf3e !important;
+  margin: 0 auto;
+  margin-top: 50px;
+  display: block;
+}

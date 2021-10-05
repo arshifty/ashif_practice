@@ -1,0 +1,48 @@
+@import "../../user-modal/user-modal.component.scss";
+tr.mat-header-row{
+    height: auto !important;
+}
+.form-group{
+    h6{
+        margin-bottom: 4px;
+    }
+    h3{
+        padding-bottom: 20px;
+    }
+}
+.button-submit.add{
+    min-width: 120px;
+    line-height: 36px;
+    float: right;
+    width: 120px !important;
+    cursor: pointer;
+}
+.button-submit{
+    cursor: pointer;
+}
+.reason_detail{
+    border-top: 1px solid #EFF2F4;
+    padding-top: 20px;
+    .form-group{
+        max-width: 300px;
+        .mat-form-field{
+            width: 100%;
+        }
+    }
+}
+.date_field {
+    background: #FAFBFC;
+    border: 1px solid #DAE4EB;
+    border-radius: 3px;
+    line-height: 48px;
+    width: 100%;
+
+    /deep/ .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix {
+      border: 0 !important;
+    }
+}
+.not-found-text {
+    text-align: center;
+    font-weight: bold;
+    padding-top: 20px;
+}

@@ -1,0 +1,55 @@
+.company_tittle {
+  button {
+    width: 103px !important;
+  }
+}
+
+.make-red {
+  color: red;
+}
+
+.smart_table {
+  .table {
+    .action_header {
+      width: 130px;
+      text-align: center;
+    }
+  }
+}
+.pages_area .pages_inner {
+  min-height: 80vh;
+  .search_with {
+    .form-group {
+      /deep/.mat-form-field {
+        position: relative;
+        .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix {
+          padding-left: 35px;
+        }
+        mat-icon {
+          position: absolute;
+          top: 15px;
+          left: 15px;
+          color: #263843;
+          font-size: 15px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .pages_area {
+    padding: 0;
+    padding-top: 95px;
+    .container {
+      max-width: 100%;
+      padding: 0;
+    }
+  }
+
+  .smart_table {
+    .table {
+      width: 688px;
+    }
+  }
+}

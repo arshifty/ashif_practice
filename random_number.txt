@@ -1,0 +1,67 @@
+    function getArrayOfSecureRandomNumber(number, max) {
+
+        return new Promise((resolve, reject) => {
+
+            let REQ_API = `${process.env.PRNG_EMAIL_SMS_URI}/api/v1/generate-random-values?itm=${number}&range=${max}`
+
+            request(REQ_API, function (error, response, body) {
+
+                if (!error && response.body) {
+
+                    var res_body = JSON.parse(response.body);
+
+                    if (res_body && res_body.length == number)
+
+                        resolve(res_body);
+
+                    else
+
+                        resolve(getArrayOfRandomNumber(number, max, 1));
+
+                } else {
+
+                    resolve(getArrayOfRandomNumber(number, max, 1));
+
+                }
+
+            })
+
+        })
+
+    }
+
+
+
+    function getArrayOfRandomNumber(number, max, min) {
+
+        try {
+
+            var arr = [];
+
+            while (arr.length < number) {
+
+                var r = Math.floor(Math.random() * (max - min + 1) + min);
+
+                if (arr.indexOf(r) === -1) arr.push(r);
+
+            }
+
+            return sortArray(arr);
+
+        } catch (error) {
+
+            console.log(error);
+
+            return [];
+
+        }
+
+    }
+
+
+
+    function sortArray(arr) {
+
+        return arr.sort(function (a, b) { return a - b });
+
+    }

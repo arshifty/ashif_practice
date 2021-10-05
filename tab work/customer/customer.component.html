@@ -1,0 +1,99 @@
+<ng4-loading-spinner [timeout]="50000"> </ng4-loading-spinner>
+<div class="pages_area">
+    <div class="container">
+      <div class="pages_inner">
+        <div class="company_tittle">
+          <h3>View Customers</h3>
+          <button *ngIf="_authGuardService.hasPermission('add')" mat-raised-button class="button-submit" [routerLink]="['add']">
+            <i class="fas fa-plus"></i> Add
+          </button>
+        </div>
+
+        <div class="company_row">
+          <div class="search_with row">
+            <div class="form-group col-lg-4 col-sm-6">
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-icon fontSet="fas" fontIcon="fa-search" matPrifix></mat-icon>
+                <input matInput placeholder="Customer Name" [(ngModel)]="search_criteria.name" (keyup)="getSearch()"
+                  required>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-lg-4 col-sm-6">
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-icon fontSet="fas" fontIcon="fa-search" matPrifix></mat-icon>
+                <input matInput placeholder="Customer Type" [(ngModel)]="search_criteria.org_type" (keyup)="getSearch()"
+                  required>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="add_user_table">
+            <div class="table-responsive smart_table">
+              <table mat-table [dataSource]="dataSource" class="table">
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef> Customer Name </th>
+                  <td mat-cell *matCellDef="let element"> {{element.org_name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="url">
+                  <th mat-header-cell *matHeaderCellDef> Url </th>
+                  <td mat-cell *matCellDef="let element"> {{element.club_url}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="type">
+                  <th mat-header-cell *matHeaderCellDef> Type </th>
+                  <td mat-cell *matCellDef="let element"> {{element.org_type}} </td>
+                </ng-container>
+                <ng-container matColumnDef="county">
+                  <th mat-header-cell *matHeaderCellDef> County </th>
+                  <td mat-cell *matCellDef="let element"> {{element.county}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef> Status </th>
+                  <td mat-cell *matCellDef="let element" [ngClass]="{'make-red': !element.account_status.is_active }">
+                    {{element.account_status.is_active ? 'Active' : 'Inactive'}} </td>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                  <th mat-header-cell *matHeaderCellDef class="action_header"> Action </th>
+                  <td mat-cell *matCellDef="let element" class="action_header">
+                    <span *ngIf="_authGuardService.hasPermission('view')" [routerLink]="['view', element._id]"><i class="fas fa-search"></i></span>&nbsp;
+                    <a *ngIf="_authGuardService.hasPermission('edit')" [routerLink]="['edit', element._id]"><i class="fas fa-pencil-alt"></i></a> &nbsp;
+                    <span><i class="fas fa-ellipsis-v" [matMenuTriggerFor]="more_action"></i></span>
+                    <mat-menu #more_action="matMenu">
+                      <a mat-menu-item href="https://smartlotto.ie/{{element.club_url}}" target="_blank">
+                        <span>Visit Web Page</span>
+                      </a>
+                      <button mat-menu-item (click)="loginToClub(element._id)">
+                        <span>Login As Club Admin</span>
+                      </button>
+                      
+                      <button mat-menu-item *ngIf="element.has_active_jackpot" (click)="updateJackpot(element.active_jackpot_id)">
+                        <span>
+                          Update Jackpot
+                        </span>
+                      </button>
+
+                      <button mat-menu-item *ngIf="element.has_active_prize" (click)="updatePrize(element.active_prize_id)">
+                        <span>
+                          Update Prize
+                        </span>
+                      </button>
+
+                    </mat-menu>
+                  </td>
+                </ng-container>
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true"
+              [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
+            </mat-paginator>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
