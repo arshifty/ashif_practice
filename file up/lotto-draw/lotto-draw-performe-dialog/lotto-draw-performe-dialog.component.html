@@ -1,0 +1,189 @@
+<ng4-loading-spinner [timeout]="50000"></ng4-loading-spinner>
+
+<div class="performed_dialog" *ngIf="data.type=='manual'">
+    <div class="modal-header">
+        <h4 class="modal-title">Run the Draw</h4>
+        <button type="button" class="close" (click)="onNoClick()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="company_row modal-body">
+        <tabset class="management_tab">
+            <!-- Tab 1-->
+            <tab [active]="selected== 0" (selectTab)="onClickedTab(0)" heading="Run Your Draw">
+                <div class="tab_row">
+                    <h2>Manual Draw</h2>
+                    <form class="manual_draw">
+                        <div class="form-group m-0">
+                            <h6>Enter Numbers Drawn</h6>
+                            <div class="number_filed">
+                                <input class="form-control" name="first_winning_number"
+                                    [(ngModel)]="draw_data.first_winning_number" required>
+                                <input class="form-control" name="first_winning_number"
+                                    [(ngModel)]="draw_data.second_winning_number" required>
+                                <input class="form-control" name="first_winning_number"
+                                    [(ngModel)]="draw_data.third_winning_number" required>
+                                <input class="form-control" name="first_winning_number"
+                                    [(ngModel)]="draw_data.forth_winning_number" required>
+                            </div>
+                        </div>
+                    </form>
+                    <p> Once numbers have been entered and confirmed they cannot be changed and the draw results will be
+                        published.</p>
+                    <div class="btn-group mt-3">
+                        <button class="theme-button-2" *ngIf="_authGuardService.hasPermission('edit')"
+                            (click)="onConfirmManualNumber()">Confirm</button>
+                    </div>
+                </div>
+            </tab>
+            <!-- Tab 2-->
+            <tab [active]="selected==1" (selectTab)="onClickedTab(1)" heading="Confirm" [disabled]="selected==0">
+                <div class="tab_row">
+                    <h2>Draw Approval</h2>
+                    <form class="approval_draw">
+                        <div class="form-group">
+                            <h6>Enter Password</h6>
+                            <input class="form-control" type="password" [(ngModel)]="draw_data.password" name="password"
+                                placeholder="********" required>
+                        </div>
+                    </form>
+                    <p *ngIf="waiting">Processing...</p>
+                    <div class="btn-group mt-4">
+                        <button [disabled]="waiting" class="theme-button-2"
+                            *ngIf="_authGuardService.hasPermission('edit')"
+                            (click)="confirmPasswordAndDraw()">Confirm</button>
+                    </div>
+                </div>
+            </tab>
+            <!-- Tab 3-->
+            <!-- [disabled]="selected==0 || selected==1" -->
+            <tab [active]="selected==2" (selectTab)="onClickedTab(2)" heading="Your Draw Results"
+                [disabled]="selected==0 || selected==1">
+                <div class="start_drow">
+                    <div class="start_drow_box">
+                        <h3>Draw Completed</h3>
+                        <ul class="jac_row">
+                            <li><span>Date of Draw: </span>{{generated_result.draw_date | date: 'dd/MM/yy'}}</li>
+                            <li><span><b>Jackpot: </b></span> <b class="color">€{{generated_result.jackpot_amount}}</b>
+                            </li>
+                            <li><span>Jackpot Winner:</span>
+                                {{generated_result.has_any_winner? generated_result.number_of_winner: 0 }}
+                            </li>
+                            <li><span>Match Three Winner:</span>
+                                {{generated_result.has_three_number_winner? generated_result.number_of_three_number_winner: 0}}
+                            </li>
+                            <li><span>Match Two Winner:</span>
+                                {{generated_result.has_two_number_winner? generated_result.number_of_two_number_winner: 0}}
+                            </li>
+                            <li><span>Lucky Dip Winners:</span>
+                                {{generated_result.number_of_lucky_deep_winner ? generated_result.number_of_lucky_deep_winner: 0}}
+                            </li>
+                        </ul>
+                        <p> All Players have been Notified. All Winners have been credited to their account.</p>
+                        <p>A full report has been emailed to your Primary Admin.</p>
+                    </div>
+                    <div class="next_prev">
+                        <button *ngIf="_authGuardService.hasPermission('edit')" (click)="restartDraw()"
+                            class="theme-button-2">Restart the Draw</button>&nbsp;
+                        <button *ngIf="_authGuardService.hasPermission('edit')" (click)="editDraw()"
+                            class="theme-button-2 rstrt">Edit</button>
+                    </div>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+</div>
+
+
+<!-- *********Auto draw performed area start************ -->
+<div class="performed_dialog" *ngIf="data.type=='auto'">
+    <div class="modal-header">
+        <h4 class="modal-title">Auto draw performed</h4>
+        <button type="button" class="close" (click)="onNoClick()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="company_row modal-body">
+        <tabset class="management_tab">
+            <!-- Tab 1-->
+            <tab [active]="auto_selecetd==0" heading="Run Your Draw">
+                <div class="tab_row">
+                    <h2>Auto Draw</h2>
+                    <form class="manual_draw">
+                        <div class="form-group m-0">
+                            <h6>Auto Numbers Drawn</h6>
+                            <div class="number_filed">
+                                <input class="form-control" name="first_winning_number"
+                                    [(ngModel)]="draw_data.first_winning_number" [disabled]="true">
+                                <input class="form-control" name="second_winning_number"
+                                    [(ngModel)]="draw_data.second_winning_number" [disabled]="true">
+                                <input class="form-control" name="third_winning_number"
+                                    [(ngModel)]="draw_data.third_winning_number" [disabled]="true">
+                                <input class="form-control" name="forth_winning_number"
+                                    [(ngModel)]="draw_data.forth_winning_number" [disabled]="true">
+                            </div>
+                        </div>
+                    </form>
+                    <p> Once numbers have been confirmed they cannot be changed
+                        and the draw results will be published</p>
+                    <div class="btn-group mt-3">
+                        <button class="theme-button-2" *ngIf="_authGuardService.hasPermission('edit')"
+                            (click)="onAutoDrwaConfirm()">Confirm</button> &nbsp;
+                    </div>
+                </div>
+            </tab>
+            <!-- Tab 2  -->
+            <tab [active]="auto_selecetd==1" heading="Confirm" [disabled]="auto_selecetd==0">
+                <div class="tab_row">
+                    <h2>Draw Approval</h2>
+                    <form class="approval_draw">
+                        <div class="form-group">
+                            <h6>Enter Password</h6>
+                            <input class="form-control" type="password" [(ngModel)]="draw_data.password" name="password"
+                                placeholder="********" required>
+                        </div>
+                    </form>
+                    <p *ngIf="waiting">Processing...</p>
+                    <div class="btn-group mt-4">
+                        <button [disabled]="waiting" class="theme-button-2"
+                            *ngIf="_authGuardService.hasPermission('edit')"
+                            (click)="confirmPasswordAndDraw()">Confirm</button>
+                    </div>
+                </div>
+            </tab>
+            <!-- Tab 3-->
+            <tab [active]="auto_selecetd==2" heading="Your Draw Results" [disabled]="auto_selecetd==0 || auto_selecetd==1">
+                <div class="start_drow">
+                    <div class="start_drow_box">
+                        <h3>Draw Completed</h3>
+                        <ul class="jac_row">
+                            <li><span>Date of Draw: </span>{{generated_result.draw_date | date: 'dd/MM/yy'}}</li>
+                            <li><span><b>Jackpot: </b></span> <b class="color">€{{generated_result.jackpot_amount}}</b>
+                            </li>
+                            <li><span>Jackpot Winner:</span>
+                                {{generated_result.has_any_winner? generated_result.number_of_winner: 0 }}
+                            </li>
+                            <li><span>Match Three Winner:</span>
+                                {{generated_result.has_three_number_winner? generated_result.number_of_three_number_winner: 0}}
+                            </li>
+                            <li><span>Match Two Winner:</span>
+                                {{generated_result.has_two_number_winner? generated_result.number_of_two_number_winner: 0}}
+                            </li>
+                            <li><span>Lucky Dip Winners:</span>
+                                {{generated_result.number_of_lucky_deep_winner ? generated_result.number_of_lucky_deep_winner: 0}}
+                            </li>
+                        </ul>
+                        <p> All Players have been Notified. All Winners have been credited to their account.</p>
+                        <p>A full report has been emailed to your Primary Admin.</p>
+                    </div>
+                    <div class="next_prev">
+                        <button *ngIf="_authGuardService.hasPermission('edit')" (click)="restartDraw()"
+                            class="theme-button-2">Restart the Draw</button>&nbsp;
+                        <button *ngIf="_authGuardService.hasPermission('edit')" (click)="editDraw()"
+                            class="theme-button-2 rstrt">Edit</button>
+                    </div>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+</div>

@@ -1,0 +1,156 @@
+<div class="page_title">
+  <h3>Lotto Draw Management</h3>
+  <div class="right_text">
+    <a (click)="helpNote()"><span>Help Notes</span> <i class="fas fa-question-circle"></i></a>
+  </div>
+</div>
+<div class="page_inner">
+  <ng4-loading-spinner [timeout]="50000"></ng4-loading-spinner>
+  <tabset class="management_tab">
+    <!-- Tab 1-->
+    <tab [active]="selecetd==0" heading="1 - Draw Settings">
+      <div class="tab_row">
+        <form class="jacport_form">
+          <div class="form-group">
+            <label>Last Weeks Jackpot (€)</label>
+            <input name="last_week_jackpot" class="form-control" placeholder="5000" [disabled]=true
+              [(ngModel)]="draw_setting.last_week_jackpot">
+          </div>
+          <div class="form-group">
+            <label>Next Jackpot (€)</label>
+            <input type="number" #jackpotAmount class="form-control" name="next_jackpot" placeholder="0"
+              [disabled]="draw_setting.is_alive && !enable_jackpot_amount" [(ngModel)]="draw_setting.next_jackpot">
+            <!-- <button class="theme-button-2" *ngIf="draw_setting.is_alive && !enable_jackpot_amount"
+              (click)="onClickJackpotUpdate()">Update</button>
+            <button class="theme-button-2" [disabled]="wait" *ngIf="draw_setting.is_alive && enable_jackpot_amount"
+              (click)="updateAmount()">Save</button> -->
+          </div>
+          <div class="form-group">
+            <label>Next Draw Date</label>
+            <input type="text" class="form-control" name="next_draw_date" [(ngModel)]="draw_setting.next_draw_date"
+              [disabled]="draw_setting.is_alive" placeholder="DD/MM/YYYY" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY'}"
+              bsDatepicker>
+            <!-- <input matInput [matDatepicker]="picker" name="next_draw_date" [(ngModel)]="draw_setting.next_draw_date" [disabled]="draw_setting.is_alive" placeholder="Choose a date"> -->
+            <button *ngIf="draw_setting._id && draw_setting.is_alive" class="theme-button-2"
+              (click)="rescheduleModal()">Reschedule</button>
+          </div>
+          <div class="form-group time-picker">
+            <label>Draw Time</label>
+            <timepicker name="draw_time" [disabled]="draw_setting.is_alive" [(ngModel)]="draw_setting.draw_time"
+              [showMeridian]="false"></timepicker>
+            <!-- <input aria-label="default time" placeholder="20:00" [format]="24" [ngxTimepicker]="defaultTime" name="draw_time" [(ngModel)]="draw_setting.draw_time" [disabled]="draw_setting.is_alive" readonly>
+              <ngx-material-timepicker #defaultTime></ngx-material-timepicker> -->
+          </div>
+        </form>
+
+        <p> <span *ngIf="!draw_setting.is_alive"> Click Next to Proceed to Activate Your
+            Draw </span>
+          <span *ngIf="draw_setting.is_alive && !draw_setting.game_status"> Game Status is OFF, Turn ON to allow
+            supporters to
+            play </span>
+        </p>
+
+        <div class="next_prev">
+          <button [disabled]="wait" *ngIf="!draw_setting.is_alive && is_club_active" class="theme-button-2"
+            (click)="openDrawApprovalDialog()">Activate</button>
+
+          <button *ngIf="draw_setting.is_alive && is_club_active" class="theme-button-2"
+            (click)="openGameStatusDialog()">{{draw_setting.game_status? 'Turn Off': 'Turn
+            ON'}}</button>
+
+          <button [disabled]="!initial_lotto" class="border-button" (click)="goTo(1)">Next</button>
+        </div>
+      </div>
+    </tab>
+    <!-- Tab 2-->
+    <tab [active]="selecetd==1" heading="2-Start Draw" [disabled]="!initial_lotto">
+      <div class="start_drow">
+        <div class="start_drow_box mb-4">
+          <p>Lotto Setup and Review Complete</p>
+          <h3>Start the Draw</h3>
+          <ul class="jac_row jac_row_2">
+            <li><span>Date of Next
+                Draw</span>{{!draw_setting.next_draw_date? 'N/A': draw_setting.next_draw_date | date: 'dd/MM/yyyy'}}
+            </li>
+            <li><span>Time</span>{{draw_setting.draw_time?getTime(draw_setting.draw_time): 'N/A'}}</li>
+            <li><span>Draw Number</span>{{draw_setting.draw_number? 'Week '+draw_setting.draw_number: 'N/A'}}</li>
+            <li><span>Jackpot</span>€{{draw_setting.next_jackpot?draw_setting.next_jackpot.toFixed(2): '0.00'}}</li>
+
+            <li><span>Total Lines Sold</span> {{draw_setting.total_sales_line?draw_setting.total_sales_line: '0'}}</li>
+            <li><span><b>Total Sales</b></span>
+              <b>€{{draw_setting.total_sales_amount?draw_setting.total_sales_amount.toFixed(2): '0.00'}}</b>
+            </li>
+          </ul>
+          <h6 *ngIf="!draw_setting.is_alive"> Lotto is Inactive! <br> Need to Activate Lotto</h6>
+          <h5 *ngIf="draw_setting.is_alive && draw_setting.game_status "> Lotto is Active </h5>
+          <h6 *ngIf="draw_setting.is_alive && !draw_setting.game_status "> Game status is OFF! <br>Need to turn it ON
+          </h6>
+          <div *ngIf="draw_setting.is_alive" class="draw-btns">
+            <button color="primary"
+              *ngIf="draw_setting.wining_number_pick=='manual' && is_it_cut_of_time && is_club_active"
+              class="theme-button manually" (click)="openDrawDialog('manual')">Run the Draw</button>
+            <button color="accent" class="theme-button-2"
+              *ngIf="draw_setting.wining_number_pick=='automatic' && is_it_cut_of_time && is_club_active && _authGuardService.hasPermission('edit')"
+              (click)="openDrawDialog('auto')">Run the Draw</button>
+          </div>
+          <a *ngIf="draw_setting.is_alive" class="player_list" (click)="downloadEnteredPlayerList()">Entered Players
+            List</a>
+        </div>
+
+        <div class="upload_player" *ngIf="draw_setting.is_alive">
+          <h6>Upload Tickets (xlsx)</h6>
+          <div class="theme-button">
+            <label for="file" class="m-0"><span>Select File (xlsx)</span></label>
+            <input type="file" id="file" (change)="onFileSelect($event)" [disabled]="wait" placeholder="" hidden>
+          </div>
+          <!-- <small *ngIf="validSales.length">{{validSales.length}} valid entry found. Click on Upload to continue.</small> -->
+
+          <div class="player_note" *ngIf="verifying_msz">Verifying Data, Please Wait...</div>
+          <p class="player_note" *ngIf="error_logs.length">{{error_logs.length? error_logs.length + ' invalid row
+            found.': ''}} </p>
+
+          <div class="table-responsive smart_table">
+            <table *ngIf="error_logs.length" class="table">
+              <thead>
+                <tr>
+                  <th class="text-center">Row</th>
+                  <th>Message</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let error of error_logs; let i = index">
+                <tr *ngIf="i < 5">
+                  <td class="text-center">{{error.row}}</td>
+                  <td>{{error.message}}</td>
+                </tr>
+                <tr *ngIf="i >= 5" class="border-top-0">
+                  <td class="text-center" *ngIf="expanded == true">{{error.row}}</td>
+                  <td *ngIf="expanded == true">{{error.message}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <span class="show-more" (click)="expanded = true" *ngIf="error_logs.length > 5 && expanded != true">Show
+            All</span>
+          <!-- *ngIf="validSales.length" -->
+          <button class="theme-button-2" *ngIf="isValid" [disabled]="wait" (click)="uploadTickets()"> Upload
+          </button> <br>
+          <span *ngIf="isValid"> {{validSales.length}} valid rows found.</span>
+          <button *ngIf="!validSales.length" class="theme-button-2" [disabled]="wait" (click)="downloadTemplate()">
+            Download
+            Template</button>
+        </div>
+
+        <div class="next_prev">
+          <button class="theme-button-3 next" (click)="goTo(0)">Previous</button>
+          <button [disabled]="wait"
+            *ngIf="!draw_setting.is_alive && _authGuardService.hasPermission('edit')  && is_club_active "
+            class="theme-button-2" (click)="openDrawApprovalDialog()">Activate
+            Lotto</button>
+          <button *ngIf="draw_setting.is_alive && is_club_active" class="theme-button-2"
+            (click)="openGameStatusDialog()">{{draw_setting.game_status? 'Turn Off': 'Turn
+            ON'}}</button>
+        </div>
+      </div>
+    </tab>
+  </tabset>
+</div>

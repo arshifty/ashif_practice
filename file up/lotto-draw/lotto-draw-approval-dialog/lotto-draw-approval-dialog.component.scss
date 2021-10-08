@@ -1,0 +1,54 @@
+.approval_dialog {
+    text-align: center;
+    padding: 50px 0;
+    position: relative;
+    .close{
+      cursor: pointer;
+      line-height: 35px;
+      width: 35px;
+      border-radius: 50%;
+      display: block;
+      text-align: center;
+      color: #ffffff;
+      background: #6C7275;
+      position: absolute;
+      right: 20px;
+      top: 20px;
+    }
+    .mat-dialog-actions{
+      display: block;
+    }
+    .mat-dialog-content{
+      max-width: 340px;
+      margin: 0 auto;
+      padding: 0;
+    }
+    h3 {
+      font-size: 20px;
+      font-weight: bold;
+      color: #263843;
+      text-align: center;
+      padding-bottom: 20px;
+    }
+    h5{
+      margin-bottom: 10px;
+      color: #333C4A;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .form-group{
+        .mat-form-field{
+          margin-bottom: 0;
+          width: 100%;
+        }
+    }
+    .button-submit{
+      min-width: 200px;
+      height: 50px;
+      margin-top: 20px;
+    }
+    .no_btn {
+      background: #FB6464 !important;
+    }
+}
+ 

@@ -1,0 +1,19 @@
+<ng4-loading-spinner [timeout]="50000"></ng4-loading-spinner>
+<div class="approval_dialog">
+  <form>
+    <a class="close" (click)="onNoClick()">
+      <i class="fas fa-times"></i>
+    </a>
+    <div class="mat-dialog-content">
+      <h3>Draw Approval</h3>
+      <h5>Enter Password</h5>
+      <div class="form-group">
+          <input type="password" class="form-control text-center" name="password" placeholder="*****" [(ngModel)]="password" required>
+          <div class="error">Password is required.</div>
+      </div>
+    </div>
+    <div class="btn-group">
+      <button [disabled]="wait" class="theme-button-2" (click)="onYesClick()">{{wait? "Confirming...": "Confirm"}}</button>
+    </div>
+  </form>
+</div>

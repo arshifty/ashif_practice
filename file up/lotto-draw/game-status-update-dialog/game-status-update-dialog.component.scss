@@ -1,0 +1,40 @@
+.btn-group{
+  display: flex;
+  justify-content: space-between;
+  .theme-button-2{
+    margin: 0;
+  }
+}
+.turn_on_btn{
+  margin-top: 20px;
+}
+.modal-body{
+  padding: 20px;
+  .form-group{
+    .date-time{
+      display: flex;
+      align-items: center;
+      .datepicker{
+        width: 60%;
+        margin-right: 30px;
+      }
+    }
+  }
+}
+.turn-on-msz{
+    text-align: center;
+    font-size: 20px;
+    padding: 50px 0 70px;
+    font-weight: 700;
+}
+@media(max-width: 465px){
+  .btn-group{
+    display: block;
+    button{
+      min-width: 100%;
+    }
+    .theme-button-2{
+      margin-top: 10px;
+    }
+  }
+}

@@ -1,0 +1,35 @@
+<ng4-loading-spinner [timeout]="50000"></ng4-loading-spinner>
+<div class="modal-header">
+    <h4 class="modal-title">Game Status</h4>
+    <button type="button" class="close" (click)="onNoClick()"> <span aria-hidden="true">&times;</span></button>
+</div>
+<form class="modal-body" [formGroup]="gameStatusForm" (ngSubmit)="update()">
+    <div class="mat-dialog-content" *ngIf="data.game_status">
+        <div class="form-group">
+            <label>The reason of turn game Off <span>*</span></label>
+            <input type="text" class="form-control" removeSpace formControlName="message" placeholder="">
+            <small class="form-text text-muted">Supporters will see this message in game part.</small>    
+            <span class="error"
+                *ngIf="(gameStatusForm.controls['message'].touched && gameStatusForm.controls['message'].errors?.required) || (gameStatusForm.controls['message'].errors?.required && isSubmit)">
+                Message is Required.
+            </span>
+        </div>
+        
+        <div class="form-group">
+            <label>Specify a date and time, when you want to turn it ON(optional)</label>
+            <div class="date-time"> 
+                <div class="datepicker">
+                    <input type="text" name="new_draw_date" class="form-control" formControlName="schedule_date" placeholder="DD/MM/YYYY" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY'}" bsDatepicker>
+                </div> 
+                <div class="time-picker">
+                    <timepicker name="new_draw_time" formControlName="schedule_time" [showMeridian]="false"></timepicker>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p *ngIf="!data.game_status" class='turn-on-msz'>Are you sure to Turn game ON?</p> 
+    <div class="btn-group">
+        <button type="button" class="theme-button-3 next" (click)="onNoClick()">Cancel</button>
+        <button [disabled]="waiting" class="theme-button-2">{{data.game_status ? 'Submit' : 'Confirm'}}</button>
+    </div>
+</form>

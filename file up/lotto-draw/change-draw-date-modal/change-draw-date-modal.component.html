@@ -1,0 +1,40 @@
+<div class="modal-header">
+  <h4 class="modal-title">Change draw date</h4>
+  <button type="button" class="close" (click)="onNoClick()">
+      <span aria-hidden="true">&times;</span>             
+  </button>
+</div> 
+<div class="modal-body">
+  <ng4-loading-spinner [timeout]="50000"></ng4-loading-spinner>
+
+  <form (ngSubmit)="reSchedule()" class="jacport_form">
+    <!-- <div class="form-check mb-2">
+      <input class="form-check-input" type="radio" id="gridRadios1" name="reschedule" [value]="-24" [(ngModel)]="reScheduleObj.value">
+      <label class="form-check-label" for="gridRadios1">24 hours before scheduled draw</label>
+    </div>
+    <div class="form-check mb-2">
+      <input class="form-check-input" type="radio" id="gridRadios2" name="reschedule" [value]="0" [(ngModel)]="reScheduleObj.value">
+      <label class="form-check-label" for="gridRadios2">Scheduled draw date</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" id="gridRadios3" name="reschedule" [value]="24" [(ngModel)]="reScheduleObj.value">
+      <label class="form-check-label" for="gridRadios3">24 hours after scheduled draw date </label>
+    </div>  -->
+
+    
+    <div class="form-group">
+      <label>Next Draw Date</label>
+      <div class="datepicker">
+        <input type="text" name="new_draw_date" class="form-control" [(ngModel)]="reScheduleObj.new_draw_date"  placeholder="DD/MM/YYYY"  [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY'}" bsDatepicker>
+      </div>
+    </div>
+    <div class="form-group time-picker">
+      <label>Draw Time</label> 
+      <timepicker name="new_draw_time" [(ngModel)]="reScheduleObj.new_draw_time"
+      [showMeridian]="false"></timepicker>
+    </div>
+    <div class="button_group p-0"> 
+      <button class="theme-button-2 mt-4" [disabled]="waiting" type="submit">Save</button>
+    </div>
+  </form>
+</div>
