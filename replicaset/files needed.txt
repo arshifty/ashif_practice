@@ -1,0 +1,96 @@
+step - 1 : create 3 server as a folder
+mkdir -p serverA serverB serverC
+
+step - 2 : for serverA
+mongod --port 27001 --dbpath /home/ashif/ess/work/replicaset/serverA --logpath /home/ashif/ess/work/replicaset/serverA/mongod1.log --replSet rs0 --fork
+
+step - 3 : for serverB
+mongod --port 27002 --dbpath /home/ashif/ess/work/replicaset/serverB --logpath /home/ashif/ess/work/replicaset/serverB/mongod1.log --replSet rs0 --fork
+
+step - 4 : for serverC
+mongod --port 27003 --dbpath /home/ashif/ess/work/replicaset/serverC --logpath /home/ashif/ess/work/replicaset/serverC/mongod1.log --replSet rs0 --fork
+
+step - 5 : for checking 
+vi mongod.conf
+   you will find the replSetName : rs0
+mongod --config mongod.conf 
+   about to fork child process    
+
+step - 6 : find all process of the server name with the same replica name  
+ps -ef | grep mongo
+
+step - 7 : in serverA
+mongo --port 27001
+cfg = {
+        "_id" : "rs0",
+        "members" : [
+                {
+                        "_id" : 0,
+                        "host" : "localhost:27001"
+                },
+                {
+                        "_id" : 1,
+                        "host" : "localhost:27002"
+                },
+                {
+                        "_id" : 2,
+                        "host" : "localhost:27003"
+                }
+        ]
+}
+
+rs.initiate(cfg)
+rs.status()
+
+then it shows the 
+rs0:PRIMARY> 
+rs0:PRIMARY> show dbs
+rs0:PRIMARY> db.food.insert({name:"banana",price:24})
+rs0:PRIMARY> db.food.find({})
+
+step - 8 :  start serverB
+mongo --port 27002
+rs0:SECONDARY> rs.conf()
+rs0:SECONDARY> show dbs
+ "errmsg" : "not master and slaveOk=false",
+rs0:SECONDARY> rs.slaveOk()
+rs0:SECONDARY> show dbs
+
+the same way start serverC and slave to show database 
+
+step - 9 : if master or primary instance is stepdown
+
+serverA :  rs0:PRIMARY> rs.stepDown()
+THEN IT BECOMES SECONDARY 
+rs0:SECONDARY> rs.status()
+
+                        "_id" : 0,
+                        "name" : "localhost:27001",
+                        "health" : 1,
+                        "state" : 2,
+                        "stateStr" : "SECONDARY",
+
+
+  "_id" : 1,
+                        "name" : "localhost:27002",
+                        "health" : 1,
+                        "state" : 1,
+                        "stateStr" : "PRIMARY",
+
+
+rs0:SECONDARY> show dbs
+it will not work 
+then 
+rs0:SECONDARY> rs.slaveOk()
+rs0:SECONDARY> show dbs
+now it works 
+
+step - 10 : we can not insert data from secondary instance 
+serverA : 
+we can only read
+rs0:SECONDARY> db.food.find({})
+{ "_id" : ObjectId("60c090728e353b43c13f919d"), "name" : "apple", "price" : 22 }
+
+we can not write 
+rs0:SECONDARY> db.food.insert({name:"banana",price:24})
+"errmsg" : "not master",

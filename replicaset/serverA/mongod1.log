@@ -1,0 +1,22 @@
+2021-07-02T16:33:07.288+0600 I CONTROL  [initandlisten] MongoDB starting : pid=637072 port=27001 dbpath=/home/ashif/ess/work/replicaset/serverA 64-bit host=ashif
+2021-07-02T16:33:07.288+0600 I CONTROL  [initandlisten] db version v3.6.8
+2021-07-02T16:33:07.288+0600 I CONTROL  [initandlisten] git version: 8e540c0b6db93ce994cc548f000900bdc740f80a
+2021-07-02T16:33:07.288+0600 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.1.1f  31 Mar 2020
+2021-07-02T16:33:07.288+0600 I CONTROL  [initandlisten] allocator: tcmalloc
+2021-07-02T16:33:07.288+0600 I CONTROL  [initandlisten] modules: none
+2021-07-02T16:33:07.288+0600 I CONTROL  [initandlisten] build environment:
+2021-07-02T16:33:07.288+0600 I CONTROL  [initandlisten]     distarch: x86_64
+2021-07-02T16:33:07.288+0600 I CONTROL  [initandlisten]     target_arch: x86_64
+2021-07-02T16:33:07.288+0600 I CONTROL  [initandlisten] options: { net: { port: 27001 }, processManagement: { fork: true }, replication: { replSet: "rs0" }, storage: { dbPath: "/home/ashif/ess/work/replicaset/serverA" }, systemLog: { destination: "file", path: "/home/ashif/ess/work/replicaset/serverA/mongod1.log" } }
+2021-07-02T16:33:07.289+0600 I -        [initandlisten] Detected data files in /home/ashif/ess/work/replicaset/serverA created by the 'wiredTiger' storage engine, so setting the active storage engine to 'wiredTiger'.
+2021-07-02T16:33:07.289+0600 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=5386M,session_max=20000,eviction=(threads_min=4,threads_max=4),config_base=false,statistics=(fast),cache_cursors=false,compatibility=(release="3.0",require_max="3.0"),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),statistics_log=(wait=0),verbose=(recovery_progress),
+2021-07-02T16:33:07.733+0600 E STORAGE  [initandlisten] WiredTiger error (-31802) [1625221987:733652][637072:0x7f120680dac0], file:WiredTiger.wt, connection: unable to read root page from file:WiredTiger.wt: WT_ERROR: non-specific WiredTiger error
+2021-07-02T16:33:07.733+0600 E STORAGE  [initandlisten] WiredTiger error (0) [1625221987:733850][637072:0x7f120680dac0], file:WiredTiger.wt, connection: WiredTiger has failed to open its metadata
+2021-07-02T16:33:07.733+0600 E STORAGE  [initandlisten] WiredTiger error (0) [1625221987:733874][637072:0x7f120680dac0], file:WiredTiger.wt, connection: This may be due to the database files being encrypted, being from an older version or due to corruption on disk
+2021-07-02T16:33:07.733+0600 E STORAGE  [initandlisten] WiredTiger error (0) [1625221987:733885][637072:0x7f120680dac0], file:WiredTiger.wt, connection: You should confirm that you have opened the database with the correct options including all encryption and compression options
+2021-07-02T16:33:07.735+0600 E -        [initandlisten] Assertion: 28595:-31802: WT_ERROR: non-specific WiredTiger error src/mongo/db/storage/wiredtiger/wiredtiger_kv_engine.cpp 421
+2021-07-02T16:33:07.735+0600 I STORAGE  [initandlisten] exception in initAndListen: Location28595: -31802: WT_ERROR: non-specific WiredTiger error, terminating
+2021-07-02T16:33:07.735+0600 I NETWORK  [initandlisten] shutdown: going to close listening sockets...
+2021-07-02T16:33:07.735+0600 I NETWORK  [initandlisten] removing socket file: /tmp/mongodb-27001.sock
+2021-07-02T16:33:07.735+0600 I CONTROL  [initandlisten] now exiting
+2021-07-02T16:33:07.735+0600 I CONTROL  [initandlisten] shutting down with code:100
