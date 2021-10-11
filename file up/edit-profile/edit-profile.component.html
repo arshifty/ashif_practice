@@ -1,0 +1,160 @@
+<ng4-loading-spinner [timeout]="50000"></ng4-loading-spinner>
+
+<div class="media edit-club-pf">
+    <div class="club_img">
+        <label for="file">
+            <input id="file" type="file" (change)="handleFileInput($event)">
+            <img width="125px" height="125px" [src]="url" class="rounded-circle"
+                src="https://smartlottoassets.s3.eu-west-1.amazonaws.com/public-assets/user-2.png" alt="club-banner"
+                (error)="errorHandler($event)" alt="club-banner">
+            <div class="loading">
+                <img src="https://smartlottoassets.s3.eu-west-1.amazonaws.com/public-assets/icons/loading.png" alt="">
+            </div>
+        </label>
+    </div>
+</div>
+<div class="club-pf-body">
+    <form action="#" class="edit-clus-pf row" [formGroup]="profileForm" (ngSubmit)="save()">
+        <div class="form-group col-lg-12">
+            <label for="Name">First Name</label>
+            <input type="text" class="form-control" placeholder="First Name" formControlName="first_name">
+            <span
+                *ngIf="(formSubmitted || profileForm.controls['first_name'].touched) && profileForm.controls['first_name'].errors"
+                class="error text-danger">First name is required.</span>
+        </div>
+
+        <div class="form-group col-lg-12">
+            <label for="surname">Surname</label>
+            <input type="text" class="form-control" placeholder="Surname" formControlName="last_name">
+            <span
+                *ngIf="(formSubmitted || profileForm.controls['last_name'].touched) && profileForm.controls['last_name'].errors"
+                class="error text-danger">Surname is required.</span>
+        </div>
+
+
+        <div class="form-group col-4">
+
+            <label>Mobile</label>
+            <div class="selector">
+                <select class="custom-select" formControlName="phone_code" required>
+                    <option *ngFor="let country of counriesCode" [value]="country.Iso">
+                        {{country.countryCode}}({{country.Iso}})</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-8" >
+            <div class="extra-numbar">
+                <span *ngIf="profileForm.controls['phone_code'].value == +353">08</span>
+                <input type="text" inputmode="numeric" class="form-control" placeholder="XXXXXXXXX" formControlName="phone" [phoneExistCheck]="{dial_code: profileForm.controls['phone_code'].value }">
+            </div>
+
+            <span
+                *ngIf="(formSubmitted || profileForm.controls['phone'].touched) && profileForm.controls['phone'].errors && profileForm.controls['phone'].errors['required']"
+                class="error text-danger">Phone is required.</span>
+
+        <span class="error  text-danger"
+                  *ngIf="!profileForm.controls['phone_code'].errors?.required && profileForm.controls['phone']?.errors?.invalid "> 
+                  {{profileForm.controls['phone']?.errors?.message}}</span>
+                <span class="error  text-danger"
+                  *ngIf="!profileForm.controls['phone_code'].errors?.required && !profileForm.controls['phone']?.errors?.invalid && profileForm.errors?.invalid">{{profileForm.errors?.message}}</span>
+        </div>
+
+        <div class="form-group col-lg-12">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" placeholder="Email" formControlName="email" emailExistCheck>
+            <span
+                *ngIf="(formSubmitted || profileForm.controls['email'].touched) && profileForm.controls['email'].errors && profileForm.controls['email'].errors['required']"
+                class="error text-danger">Email is required.</span>
+                <span class="error text-danger"
+                *ngIf="!profileForm.controls['email'].errors?.required && profileForm.controls['email'].errors?.invalid ">{{profileForm.controls['email'].errors?.message}}</span>
+        </div>
+        <div class="form-group col-lg-12">
+            <label for="email">Date of Birth</label>
+            <div class="input_group">
+                <input formControlName="dd_of_birth" class="form-control" type="text" placeholder="DD">
+                <input formControlName="mm_of_birth" class="form-control" type="text" placeholder="MM">
+                <input formControlName="yy_of_birth" class="form-control" type="text" placeholder="YY">
+                <button type="button"><span>18+</span> </button>
+            </div>
+        </div>
+        <div class="form-group col-12">
+            <label>Address Line 1</label>
+            <input type="text" class="form-control" placeholder="Address Line 1" formControlName="address1">
+            <span
+                *ngIf="(formSubmitted || profileForm.controls['address1'].touched) && profileForm.controls['address1'].errors"
+                class="error text-danger">First name is required.</span>
+        </div>
+        <div class="form-group col-12">
+            <label>Address Line 2 </label>
+            <input type="text" class="form-control" placeholder="Address line 2" formControlName="address2">
+        </div>
+        <div class="form-group col-12">
+            <label>City/Town</label>
+            <input type="text" class="form-control" placeholder="City/Town" formControlName="town">
+            <span *ngIf="(formSubmitted || profileForm.controls['town'].touched) && profileForm.controls['town'].errors"
+                class="error text-danger">Town is required.</span>
+        </div>
+        <div class="form-group col-12">
+            <label>Postal Code</label>
+            <input type="text" class="form-control" placeholder="Postal Code/Zip Code" formControlName="postcode">
+            <span
+                *ngIf="(formSubmitted || profileForm.controls['postcode'].touched) && profileForm.controls['postcode'].errors"
+                class="error text-danger">Postal Code/Zip Code is required.</span>
+        </div>
+        <div class="form-group col-12">
+            <label>County</label>
+            <div class="selector">
+                <select class="custom-select" formControlName="county" required>
+                    <option *ngFor="let county of counties" [value]="county.name">
+                        {{county.name}}
+                    </option>
+                </select>
+                <span
+                    *ngIf="(formSubmitted || profileForm.controls['county'].touched) && profileForm.controls['county'].errors"
+                    class="error text-danger">County is required.</span>
+            </div>
+        </div>
+        <div class="form-group col-12">
+            <label>My Favourite</label>
+            <div class="selector">
+                <select formControlName="favourite_club" class="custom-select" required>
+                    <option selected disabled value="">Default Club</option>
+                    <option *ngFor="let club of activeClubList" [value]="club._id">
+                        {{club.org_name}}
+                    </option>
+                </select>
+                <span
+                    *ngIf="(formSubmitted || profileForm.controls['favourite_club'].touched) && profileForm.controls['favourite_club'].errors"
+                    class="error text-danger">Default Club is required.</span>
+            </div>
+        </div>
+
+        <div class="form-group col-12">
+            <div class="custom-checkbox">
+                <input type="checkbox" formControlName="hide_name_from_list" class="custom-control-input"
+                    id="checkbox_8" hidden>
+                <label for="checkbox_8">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0.5" y="0.5" width="11" height="11" rx="2.5" fill="#F7F9FD" stroke="#263843" />
+                        <path
+                            d="M2.82009 5.61589C2.60795 5.43911 2.29267 5.46777 2.11589 5.67991C1.93911 5.89205 1.96777 6.20733 2.17991 6.38411L2.82009 5.61589ZM5.5 8.5L5.17991 8.88411L5.61663 9.24804L5.92183 8.76844L5.5 8.5ZM9.42183 3.26844C9.57008 3.03547 9.50141 2.72642 9.26844 2.57817C9.03547 2.42992 8.72642 2.49859 8.57817 2.73156L9.42183 3.26844ZM2.17991 6.38411L5.17991 8.88411L5.82009 8.11589L2.82009 5.61589L2.17991 6.38411ZM5.92183 8.76844L9.42183 3.26844L8.57817 2.73156L5.07817 8.23156L5.92183 8.76844Z" />
+                    </svg>
+                    Hide Name in Supporter List
+                </label>
+            </div>
+        </div>
+
+
+        <div class="row m-0 dubble-btn">
+            <div class="col-6">
+                <button type="button" (click)="location.back()"
+                    class="theme-button-2 d-block m-0 ng-star-inserted rounded-0 text-uppercase">CANCEL</button>
+            </div>
+            <div class="col-6">
+                <button type="submit" class="theme-button text-uppercase">Save</button>
+            </div>
+        </div>
+    </form>
+
+
+</div>
