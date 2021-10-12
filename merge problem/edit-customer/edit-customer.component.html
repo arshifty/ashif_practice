@@ -1,0 +1,814 @@
+<ng4-loading-spinner [timeout]="50000"> </ng4-loading-spinner>
+<div class="pages_area">
+  <div class="page_container">
+    <div class="row">
+      <div class="col-xl-10">
+        <div class="pages_inner">
+          <div class="company_tittle">
+            <h3>Edit Customer</h3>
+            <a href="#">Help Notes <i class="fas fa-question-circle"></i></a>
+          </div>
+          <form class="row company_row" [formGroup]="customerUpdateForm" autoComplete="off">
+            <mat-tab-group class="customer_tab" [selectedIndex]="selecetd">
+              <!--Tab 1-->
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon fontSet="fas" fontIcon="fa-building"></mat-icon>
+                  Organisation Detail
+                </ng-template>
+                <div class="row company_row">
+                  <div class="col-lg-6">
+                    <div class="example-container">
+                      <div class="form-group">
+                        <h6>Company Name</h6>
+                        <mat-form-field class="full-width-input" appearance="outline">
+                          <input matInput placeholder="Company Name" formControlName="org_name" required>
+                          <mat-error class="error">Company Name is Required.
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="form-group">
+                        <h6>Address Line 1</h6>
+                        <mat-form-field class="full-width-input" appearance="outline">
+                          <input matInput placeholder="Address line 1" formControlName="address1" required>
+                          <mat-error class="error">Address Line is
+                            Required.
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="form-group">
+                        <h6>Address Line 2</h6>
+                        <mat-form-field class="full-width-finput" appearance="outline">
+                          <input matInput placeholder="Address Line 2" formControlName="address2">
+                        </mat-form-field>
+                      </div>
+                      <div class="form-group">
+                        <h6>County/Region</h6>
+                        <mat-form-field class="full-width-input" appearance="outline">
+                          <mat-select placeholder="County" formControlName="county_id" required>
+                            <mat-option *ngFor="let county of counties" [value]="county._id">{{county.display_name}}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error class="error">County is Required.
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="form-group">
+                        <h6>Area</h6>
+                        <mat-form-field class="full-width-input" appearance="outline">
+                          <mat-select placeholder="Area" formControlName="area_ids" required multiple>
+                            <mat-option *ngFor="let area of areas" [value]="area._id">{{area.name}}</mat-option>
+                          </mat-select>
+                          <mat-error class="error">Area is Required.
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="form-group">
+                        <h6>Postal Code</h6>
+                        <mat-form-field class="full-width-input" appearance="outline">
+                          <input matInput placeholder="Postal Code" formControlName="postcode" required>
+                          <mat-error class="error">Postal Code is
+                            Required.
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="example-container">
+                      <div class="form-group">
+                        <h6>Type of Organisation</h6>
+                        <mat-form-field class="full-width-input" appearance="outline">
+                          <mat-select placeholder="GAA" formControlName="org_type" required>
+                            <mat-option [value]="'GAA'"> GAA </mat-option>
+                            <mat-option [value]="'FAI'"> FAI </mat-option>
+                            <mat-option [value]="'IRFU'"> IRFU </mat-option>
+                            <mat-option [value]="'Community'"> Community </mat-option>
+                            <mat-option [value]="'Charity'"> Charity </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="form-group">
+                        <h6>Vendor Name</h6>
+                        <mat-form-field class="full-width-input" appearance="outline">
+                          <input matInput placeholder="Vendor Name" formControlName="vendor_name">
+                          <!-- <mat-error>Vendor Name is Required</mat-error> -->
+                        </mat-form-field>
+                      </div>
+
+                      <div class="form-group">
+                        <h6>Integration key</h6>
+                        <mat-form-field class="full-width-input" appearance="outline">
+                          <input matInput placeholder="Integration key" formControlName="integration_key">
+                        </mat-form-field>
+                      </div>
+
+                      <div class="form-group">
+                        <h6>Integration Password</h6>
+                        <mat-form-field class="full-width-input" appearance="outline">
+                          <input matInput placeholder="Integration Password" formControlName="integration_password">
+                        </mat-form-field>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-md-4">
+                          <h6>Logo</h6>
+                          <div class="change_avatar">
+                            <label for="file"><img style="max-width: 150px; max-height: 150px" src="{{url}}" alt=""
+                                onError="this.url='assets/avatar.png'"></label>
+                            <input type="file" id="file" placeholder="title" (change)="handleFileInput($event,'logo')">
+                          </div>
+                        </div>
+
+                        <div class="col-md-8">
+                          <h6>Colours:
+                            <div class="circle_tooltip">
+                              <i class="fas fa-info-circle"></i>
+                              <div class="tooltip_div">
+                                <p>Select colours to be used on site marketing - banner, tickets etc. <br> <br> At least
+                                  1 and up to 2 colours may be selected</p>
+                              </div>
+                            </div>
+                          </h6>
+                          <ul>
+                            <ul>
+                              <li><input type="color" formControlName="color_1"></li>
+                              <li><input type="color" formControlName="color_2"></li>
+                            </ul>
+                          </ul>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <div class="mail_promotional">
+                              <h4>Upload Lotto Widget Image</h4>
+                              <div class="promotional_img">
+                                <img src="{{lotto_widget_image_url}}" alt=""
+                                  onError="this.lotto_widget_image_url='https://placehold.it/200x250'">
+                              </div>
+                              <div class="promotional_bottom">
+                                <button (click)="removeImage('lotto_widget')" type="button" class="remove_text"><i
+                                    class="fas fa-times"></i> Remove Image</button>
+                                <div class="change_avatar">
+                                  <label for="lotto_widget_file"><span><i class="fas fa-cloud-upload-alt"></i>
+                                      Browse</span></label>
+                                  <input #fileLottowidget type="file" id="lotto_widget_file"
+                                    (click)="fileLottowidget.value = null"
+                                    (change)="handleFileInput($event,'lotto_widget')" placeholder="title">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <div class="mail_promotional">
+                              <h4>Upload 50/50 Widget Image</h4>
+                              <div class="promotional_img">
+                                <img src="{{fifty_widget_image_url}}" alt=""
+                                  onError="this.fifty_widget_image_url='https://placehold.it/200x250'">
+                              </div>
+                              <div class="promotional_bottom">
+                                <button (click)="removeImage('fifty_widget')" type="button" class="remove_text"><i
+                                    class="fas fa-times"></i>
+                                  Remove Image</button>
+                                <div class="change_avatar">
+                                  <label for="fifty_widget_file"><span><i class="fas fa-cloud-upload-alt"></i>
+                                      Browse</span></label>
+                                  <input type="file" id="fifty_widget_file" #fileFiftyWidget
+                                    (click)="fileFiftyWidget.value = null"
+                                    (change)="handleFileInput($event,'fifty_widget')" placeholder="title">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <div class="mail_promotional">
+                              <h4>Upload Prize Draw Widget Image</h4>
+                              <div class="promotional_img">
+                                <img src="{{prize_widget_image_url}}" alt=""
+                                  onError="this.prize_widget_image_url='https://placehold.it/200x250'">
+                              </div>
+                              <div class="promotional_bottom">
+                                <button (click)="removeImage('prize_widget')" type="button" class="remove_text"><i
+                                    class="fas fa-times"></i> Remove Image</button>
+                                <div class="change_avatar">
+                                  <label for="prize_widget_file"><span><i class="fas fa-cloud-upload-alt"></i>
+                                      Browse</span></label>
+                                  <input #fileprizewidget type="file" id="prize_widget_file"
+                                    (click)="fileprizewidget.value = null"
+                                    (change)="handleFileInput($event,'prize_widget')" placeholder="title">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <div class="mail_promotional">
+                              <h4>Upload Lotto Check Ticket Image</h4>
+                              <div class="promotional_img">
+                                <img src="{{lotto_template_image_url}}" alt=""
+                                  onError="this.lotto_template_image_url='https://placehold.it/200x250'">
+                              </div>
+                              <div class="promotional_bottom">
+                                <button (click)="removeImage('lotto_template')" type="button" class="remove_text"><i
+                                    class="fas fa-times"></i> Remove Image</button>
+                                <div class="change_avatar">
+                                  <label for="lotto_template_file"><span><i class="fas fa-cloud-upload-alt"></i>
+                                      Browse</span></label>
+                                  <input #fileLottoTemplate type="file" id="lotto_template_file"
+                                    (click)="fileLottoTemplate.value = null"
+                                    (change)="handleFileInput($event,'lotto_template')" placeholder="title">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <div class="mail_promotional">
+                              <h4>Upload 50/50 Check Ticket Image</h4>
+                              <div class="promotional_img">
+                                <img src="{{fifty_template_image_url}}" alt=""
+                                  onError="this.fifty_template_image_url='https://placehold.it/200x250'">
+                              </div>
+                              <div class="promotional_bottom">
+                                <button (click)="removeImage('fifty_template')" type="button" class="remove_text"><i
+                                    class="fas fa-times"></i> Remove Image</button>
+                                <div class="change_avatar">
+                                  <label for="fifty_template_file"><span><i class="fas fa-cloud-upload-alt"></i>
+                                      Browse</span></label>
+                                  <input #filefiftyTemplate type="file" id="fifty_template_file"
+                                    (click)="filefiftyTemplate.value = null"
+                                    (change)="handleFileInput($event,'fifty_template')" placeholder="title">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <div class="mail_promotional">
+                              <h4>Upload Prize Check Ticket Image</h4>
+                              <div class="promotional_img">
+                                <img src="{{prize_template_image_url}}" alt=""
+                                  onError="this.prize_template_image_url='https://placehold.it/200x250'">
+                              </div>
+                              <div class="promotional_bottom">
+                                <button (click)="removeImage('prize_template')" type="button" class="remove_text"><i
+                                    class="fas fa-times"></i>
+                                  Remove Image</button>
+                                <div class="change_avatar">
+                                  <label for="prize_template_file"><span><i class="fas fa-cloud-upload-alt"></i>
+                                      Browse</span></label>
+                                  <input type="file" id="prize_template_file" #filePrizeTemplate
+                                    (click)="filePrizeTemplate.value = null"
+                                    (change)="handleFileInput($event,'prize_template')" placeholder="title">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                  <div class="save_btn col-12">
+                    <mat-checkbox formControlName="is_active" (ngModelChange)="active_check($event)">Inactive?
+                    </mat-checkbox>
+                    <button mat-raised-button class="button-submit" type="button" [disabled]="btn_disable"
+                      (click)="update()">Save</button>
+                    <button mat-raised-button class="button-submit" type="button" (click)="goTo(1)">Next</button>
+                    <button mat-raised-button type="button" class="button-submit cancle_btn" mat-button
+                      (click)="onNoClick()">Cancel</button>
+                  </div>
+                </div>
+                <!-- </form> -->
+              </mat-tab>
+              <!-- Tab 2-->
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon fontSet="fas" fontIcon="fa-user"></mat-icon>
+                  Primary Contact
+                </ng-template>
+
+                <div class="row company_row">
+                  <div class="col-lg-6">
+                    <div class="example-container">
+                      <div class="form-group">
+                        <h6>First Name</h6>
+                        <mat-form-field class="full-width-input" appearance="outline">
+                          <input matInput placeholder="First Name" formControlName="first_name_primary" required>
+                          <mat-error class="error">First name is required</mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="form-group">
+                        <h6>Surname</h6>
+                        <mat-form-field class="full-width-input" appearance="outline">
+                          <input matInput placeholder="Surname" formControlName="last_name_primary" required>
+                          <mat-error class="error">Last name is required</mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="form-group">
+                        <h6>Mobile</h6>
+                        <div class="phone-nput">
+                          <mat-form-field class="full-width-input sm-field" appearance="outline">
+                            <mat-select formControlName="phone_code_primary">
+                              <mat-option *ngFor="let country of counriesCode" [value]="country.Iso">
+                                {{country.countryCode}}({{country.Iso}})</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <div class="extra-numbar">
+                            <span *ngIf="customerUpdateForm.controls['phone_code_primary'].value == +353">08</span>
+                            <input matInput placeholder="Mobile" type="text" inputmode="numeric"
+                              formControlName="phone_primary"
+                              [phoneExistCheck]="{dial_code: customerUpdateForm.controls['phone_code_primary'].value , customer_id : primary_id }">
+                          </div>
+                        </div>
+
+                        <mat-error class="error" *ngIf="customerUpdateForm.controls['phone_primary'].errors?.invalid">
+                          {{customerUpdateForm.controls['phone_primary'].errors?.message}}</mat-error>
+                        <mat-error class="error"
+                          *ngIf="customerUpdateForm.errors?.phone_primary && !customerUpdateForm.controls['phone_primary'].errors?.invalid">
+                          {{customerUpdateForm.errors?.phone_primary_message}}</mat-error>
+                        <mat-error class="error text-danger"
+                          *ngIf="(submitted || customerUpdateForm.controls['phone_primary'].touched) && customerUpdateForm.controls['phone_primary'].errors && customerUpdateForm.controls['phone_primary'].errors['required']">
+                          Phone is required.</mat-error>
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="example-container">
+                      <div class="form-group">
+                        <h6>Role</h6>
+                        <mat-form-field class="full-width-input" appearance="outline">
+                          <mat-select placeholder="role" formControlName="role_primary" required>
+                            <mat-option *ngFor="let role of roles" [value]="role._id">{{role.name}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div class="form-group">
+                        <h6>Email
+                          <div class="circle_tooltip">
+                            <i class="fas fa-info-circle"></i>
+                            <div class="tooltip_div">
+                              <p>Must use official club email address <br> <br> (it can be changed but best practice is
+                                to retain this email)</p>
+                            </div>
+                          </div>
+                        </h6>
+                        <mat-form-field class="full-width-input" appearance="outline">
+                          <input matInput placeholder="Email" formControlName="email_primary"
+                          [emailExistCheck]="{ customer_id : primary_id  }">
+
+                          <mat-error class="error" *ngIf="customerUpdateForm.controls['email_primary'].errors?.invalid">
+                            {{customerUpdateForm.controls['email_primary'].errors?.message}}</mat-error>
+
+                          <mat-error class="error"
+                            *ngIf="(submitted || customerUpdateForm.controls['email_primary'].touched) && customerUpdateForm.controls['email_primary'].errors && customerUpdateForm.controls['email_primary'].errors?.required">
+                            Email is required.</mat-error>
+
+                          <mat-error class="error"
+                            *ngIf="customerUpdateForm.errors?.invalid && !customerUpdateForm.controls['email_primary'].errors?.invalid">
+                            {{customerUpdateForm.errors?.message}}</mat-error>
+
+                        </mat-form-field>
+                      </div>
+
+                      <div class="save_btn">
+                        <button *ngIf="resend_primary_invite" class="invite_button" (click)="resendInvite('primary')"><i
+                            class="fas fa-paper-plane"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="save_btn col-12">
+                    <button mat-raised-button class="button-submit" type="button" [disabled]="btn_disable"
+                      (click)="update()">Save</button>
+                    <button class="button-submit" type="button" (click)="goTo(0)">Previous</button>
+                    <button mat-raised-button class="button-submit" type="button" (click)="goTo(2)">Next</button>
+                    <button type="button" mat-raised-button class="button-submit cancle_btn" mat-button
+                      (click)="onNoClick()">Cancel</button>
+                  </div>
+                </div>
+                <!-- </form> -->
+              </mat-tab>
+
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon fontSet="fas" fontIcon="fa-credit-card"></mat-icon>
+                  Bills & Payments Contact
+                </ng-template>
+                <div class="row company_row">
+                  <div class="col-lg-6">
+                    <div class="example-container">
+                      <div class="form-group">
+                        <h6>First Name</h6>
+                        <mat-form-field class="full-width-input" appearance="outline">
+                          <input matInput placeholder="First Name" formControlName="first_name_bill" required>
+                          <mat-error class="error">First name is required</mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="form-group">
+                        <h6>Surname</h6>
+                        <mat-form-field class="full-width-input" appearance="outline">
+                          <input matInput placeholder="Surname" formControlName="last_name_bill" required>
+                          <mat-error class="error">Last name is required</mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="form-group">
+                        <h6>Mobile</h6>
+                        <div class="phone-nput">
+                          <mat-form-field class="full-width-input sm-field" appearance="outline">
+                            <mat-select formControlName="phone_code_bill">
+                              <mat-option *ngFor="let country of counriesCode" [value]="country.Iso">
+                                {{country.countryCode}}({{country.Iso}})</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <div class="extra-numbar">
+                            <span *ngIf="customerUpdateForm.controls['phone_code_bill'].value == +353">08</span>
+                            <input matInput placeholder="Mobile" type="text" inputmode="numeric" formControlName="phone_bill"
+                            [phoneExistCheck]="{dial_code: customerUpdateForm.controls['phone_code_bill'].value , customer_id : bill_id  }" >
+                          </div>
+                        </div>
+
+                        <mat-error class="error" *ngIf="customerUpdateForm.controls['phone_bill'].errors?.invalid">
+                          {{customerUpdateForm.controls['phone_bill'].errors?.message}}</mat-error>
+
+                        <mat-error class="error"
+                          *ngIf="customerUpdateForm.errors?.phone_bill && !customerUpdateForm.controls['phone_bill'].errors?.invalid">
+                          {{customerUpdateForm.errors?.phone_bill_message}}</mat-error>
+
+                        <mat-error class="error"
+                          *ngIf="(submitted || customerUpdateForm.controls['phone_bill'].touched) && customerUpdateForm.controls['phone_bill'].errors && customerUpdateForm.controls['phone_bill'].errors['required']">
+                          Phone is required.</mat-error>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="example-container">
+                      <div class="form-group">
+                        <h6>Role</h6>
+                        <mat-form-field class="full-width-input" appearance="outline">
+                          <mat-select placeholder="role" formControlName="role_bill" required>
+                            <mat-option *ngFor="let role of roles" [value]="role._id">{{role.name}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div class="form-group">
+                        <h6>Email
+                          <div class="circle_tooltip">
+                            <i class="fas fa-info-circle"></i>
+                            <div class="tooltip_div">
+                              <p>Must use official club email address <br> <br> (it can be changed but best practice is
+                                to retain this email)</p>
+                            </div>
+                          </div>
+                        </h6>
+                        <mat-form-field class="full-width-input" appearance="outline">
+
+                          <input matInput placeholder="Email" formControlName="email_bill"
+                          [emailExistCheck]="{ customer_id : bill_id  }">
+
+                          <mat-error class="error" *ngIf="customerUpdateForm.controls['email_bill'].errors?.invalid">
+                            {{customerUpdateForm.controls['email_bill'].errors?.message}}</mat-error>
+
+                          <mat-error class="error"
+                            *ngIf="(submitted || customerUpdateForm.controls['email_bill'].touched) && customerUpdateForm.controls['email_bill'].errors && customerUpdateForm.controls['email_bill'].errors?.required">
+                            Email is required.</mat-error>
+
+                          <mat-error class="error"
+                            *ngIf="customerUpdateForm.errors?.invalid && !customerUpdateForm.controls['email_bill'].errors?.invalid">
+                            {{customerUpdateForm.errors?.message}}</mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="save_btn">
+                        <button *ngIf="resend_bill_invite" (click)="resendInvite('bill')" class="invite_button"><i
+                            class="fas fa-paper-plane"></i></button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="save_btn col-12">
+
+                    <button mat-raised-button class="button-submit" type="button" [disabled]="btn_disable"
+                      (click)="update()">Save</button>
+                    <button class="button-submit" type="button" (click)="goTo(1)">Previous</button>
+                    <button mat-raised-button class="button-submit" type="button" (click)="goTo(3)">Next</button>
+                    <button type="button" mat-raised-button class="button-submit cancle_btn" mat-button
+                      (click)="onNoClick()">Cancel</button>
+
+                  </div>
+                </div>
+                <!-- </form> -->
+              </mat-tab>
+              <!-- Tab 4 -->
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="7.5" cy="7.5" r="4.5" />
+                    <path
+                      d="M12.8033 2.19671C11.3867 0.780117 9.50335 0 7.5 0C5.49665 0 3.61327 0.780117 2.19668 2.19671C0.780117 3.61327 0 5.49668 0 7.5C0 9.50332 0.780117 11.3867 2.19668 12.8033C3.61327 14.2199 5.49665 15 7.5 15C9.50335 15 11.3867 14.2199 12.8033 12.8033C14.2199 11.3867 15 9.50332 15 7.5C15 5.49668 14.2199 3.61327 12.8033 2.19671ZM7.5 14.3478C3.7241 14.3478 0.652178 11.2759 0.652178 7.5C0.652178 3.7241 3.7241 0.652178 7.5 0.652178C11.2759 0.652178 14.3478 3.7241 14.3478 7.5C14.3478 11.2759 11.2759 14.3478 7.5 14.3478Z" />
+                    <path
+                      d="M8.67211 9.25728C8.32894 9.46632 7.93179 9.5768 7.52363 9.5768C6.69451 9.5768 5.97377 9.12243 5.61399 8.45861H6.86094C7.0439 8.45861 7.19227 8.31558 7.19227 8.13915C7.19227 7.96271 7.0439 7.81968 6.86094 7.81968H5.39545C5.37869 7.71549 5.36991 7.60883 5.36991 7.50021C5.36991 7.3916 5.37869 7.28491 5.39545 7.18075H6.86094C7.0439 7.18075 7.19227 7.03772 7.19227 6.86128C7.19227 6.68484 7.0439 6.54182 6.86094 6.54182H5.61399C5.9738 5.878 6.69451 5.42363 7.52363 5.42363C7.93185 5.42363 8.32906 5.53414 8.67223 5.74324C8.827 5.83756 9.0316 5.79298 9.12936 5.64381C9.22709 5.49464 9.18095 5.29733 9.02624 5.2031C8.57694 4.92936 8.05732 4.78467 7.52366 4.78467C6.32052 4.78467 5.29168 5.51608 4.88896 6.54179H4.21023C4.02727 6.54179 3.87891 6.68482 3.87891 6.86125C3.87891 7.03769 4.02727 7.18072 4.21023 7.18072H4.72738C4.71455 7.2856 4.70723 7.39206 4.70723 7.50019C4.70723 7.60834 4.71455 7.71477 4.72738 7.81965H4.21023C4.02727 7.81965 3.87891 7.96268 3.87891 8.13912C3.87891 8.31556 4.02727 8.45858 4.21023 8.45858H4.88896C5.29168 9.48429 6.32052 10.2157 7.52366 10.2157C8.0573 10.2157 8.57682 10.0711 9.02609 9.79741C9.1808 9.70315 9.22697 9.50585 9.12924 9.3567C9.03154 9.20759 8.82688 9.16304 8.67211 9.25728Z"
+                      fill="white" />
+                    <path
+                      d="M11.8404 4.02428C11.7273 3.88331 11.5215 3.86071 11.3806 3.97367C11.2396 4.08669 11.217 4.29251 11.3299 4.43345C12.0339 5.31153 12.406 6.37184 12.406 7.4998C12.406 10.2051 10.2051 12.406 7.4998 12.406C4.79452 12.406 2.59362 10.2051 2.59362 7.4998C2.59362 4.79452 4.79452 2.59362 7.4998 2.59362C8.35011 2.59362 9.18773 2.81445 9.92221 3.23226C10.0791 3.32157 10.2789 3.26673 10.3682 3.10969C10.4575 2.95269 10.4027 2.75298 10.2456 2.66364C9.41283 2.18988 8.46331 1.93945 7.4998 1.93945C4.43383 1.93945 1.93945 4.43383 1.93945 7.4998C1.93945 10.5658 4.43383 13.0601 7.4998 13.0601C10.5658 13.0601 13.0601 10.5658 13.0601 7.4998C13.0601 6.23978 12.627 5.00548 11.8404 4.02428Z" />
+                    <path
+                      d="M11.1554 3.32728C11.0804 3.25227 10.9688 3.218 10.8637 3.239C10.8431 3.24321 10.8226 3.24934 10.8033 3.25742C10.7836 3.26549 10.7648 3.27551 10.7474 3.28716C10.7296 3.29913 10.7131 3.31238 10.6982 3.32725C10.6381 3.3877 10.6035 3.47081 10.6035 3.55615C10.6035 3.57718 10.6058 3.5985 10.61 3.61919C10.6143 3.63987 10.6204 3.66026 10.6285 3.67964C10.6366 3.69936 10.6466 3.71813 10.6582 3.73558C10.6699 3.75336 10.6834 3.76986 10.6983 3.78473C10.7132 3.79961 10.7297 3.81317 10.7475 3.82482C10.7649 3.83647 10.7837 3.84649 10.8034 3.85457C10.8228 3.86264 10.8431 3.8688 10.8638 3.87298C10.8845 3.8772 10.9058 3.87946 10.9268 3.87946C11.0122 3.87946 11.0953 3.84487 11.1554 3.78473C11.1703 3.76986 11.1839 3.75336 11.1958 3.73558C11.2074 3.71813 11.2174 3.69936 11.2255 3.67964C11.2336 3.66023 11.2398 3.63987 11.2439 3.61919C11.2482 3.5985 11.2501 3.57715 11.2501 3.55615C11.2501 3.47081 11.2158 3.38773 11.1554 3.32728Z" />
+                  </svg>
+                  Financial
+                </ng-template>
+
+                <div class="row company_row financial_tab">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <mat-checkbox formControlName="defer_all_fees_except_sms">Defer all fees except SMS until
+                      </mat-checkbox>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6 form-group">
+                        <mat-form-field class="full-width-input date_field" appearance="outline">
+                          <input matInput [matDatepicker]="other_waive_from" formControlName="waive_others_fees_from"
+                            placeholder="Date From">
+                          <mat-datepicker-toggle matSuffix [for]="other_waive_from"></mat-datepicker-toggle>
+                          <mat-datepicker #other_waive_from></mat-datepicker>
+                        </mat-form-field>
+                        <span class="error"
+                          *ngIf="customerUpdateForm.controls['waive_others_fees_from'].hasError('required')">Date from
+                          is required.</span>
+                      </div>
+                      <div class="col-md-6 form-group">
+                        <mat-form-field class="full-width-input date_field" appearance="outline">
+                          <input matInput [matDatepicker]="other_waive_to" formControlName="waive_others_fees_to"
+                            placeholder="Date To">
+                          <mat-datepicker-toggle matSuffix [for]="other_waive_to"></mat-datepicker-toggle>
+                          <mat-datepicker #other_waive_to></mat-datepicker>
+                        </mat-form-field>
+                        <span class="error"
+                          *ngIf="customerUpdateForm.controls['waive_others_fees_to'].hasError('required')">Date to is
+                          required.</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <mat-checkbox formControlName="waive_all_fees_incld_sms">Waive all fees including SMS until
+                      </mat-checkbox>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6 form-group">
+                        <mat-form-field class="full-width-input date_field" appearance="outline">
+                          <input matInput formControlName="waive_all_fees_from" [matDatepicker]="sms_waive_from"
+                            placeholder="Date from">
+                          <mat-datepicker-toggle matSuffix [for]="sms_waive_from"></mat-datepicker-toggle>
+                          <mat-datepicker #sms_waive_from></mat-datepicker>
+                        </mat-form-field>
+                        <span class="error"
+                          *ngIf="customerUpdateForm.controls['waive_all_fees_from'].hasError('required')">Date from is
+                          required.</span>
+                      </div>
+                      <div class="col-md-6 form-group">
+                        <mat-form-field class="full-width-input date_field" appearance="outline">
+                          <input matInput formControlName="waive_all_fees_to" [matDatepicker]="sms_waive_to"
+                            placeholder="Date to">
+                          <mat-datepicker-toggle matSuffix [for]="sms_waive_to"></mat-datepicker-toggle>
+                          <mat-datepicker #sms_waive_to></mat-datepicker>
+                        </mat-form-field>
+                        <span class="error"
+                          *ngIf="customerUpdateForm.controls['waive_all_fees_to'].hasError('required')">Date to is
+                          required.</span>
+                      </div>
+                    </div>
+                  </div>
+                  <h4 class="col-12 heading_t">Income Reporting</h4>
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <h4>Add Fund</h4>
+                      <h6>Name</h6>
+                      <mat-form-field class="full-width-input" appearance="outline">
+                        <input matInput placeholder="Type here" (keyup.enter)="addNewTeam()" #teamName>
+                        <mat-error class="error">Type Here is Required.</mat-error>
+                      </mat-form-field>
+                      <button class="button-submit" type="button" (click)="addNewTeam()">Add</button>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <h4>All Teams</h4>
+                      <p *ngIf="team_list.length">to change the order use drag & drop </p>
+                      <ul cdkDropList class="team_list" *ngIf="team_list.length" (cdkDropListDropped)="drop($event)">
+                        <li *ngFor="let team of team_list; let i=index;" cdkDrag>
+                          {{team}}
+                          <span>
+                            <i class="fas fa-times" (click)="removeTeam(i)"></i>
+                          </span>
+                        </li>
+                      </ul>
+                      <p *ngIf="!team_list.length">No team added.</p>
+                    </div>
+                  </div>
+                  <div class="save_btn col-12">
+
+                    <button mat-raised-button class="button-submit" type="button" [disabled]="btn_disable"
+                      (click)="update()">Save</button>
+                    <button class="button-submit" type="button" (click)="goTo(2)">Previous</button>
+                    <button mat-raised-button class="button-submit" type="button" (click)="goTo(4)">Next</button>
+                    <button type="button" mat-raised-button class="button-submit cancle_btn" mat-button
+                      (click)="onNoClick()">Cancel</button>
+
+                  </div>
+                </div>
+              </mat-tab>
+
+              <!-- Tab 4 -->
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon fontSet="fas" fontIcon="fa-bullhorn"></mat-icon>
+                  Marketing (optional)
+                </ng-template>
+
+                <div class="row company_row">
+                  <div class="col-lg-6">
+                    <h3>About Your Organisation</h3>
+                    <div class="form-group">
+                      <h6>When was it established (Year)*</h6>
+                      <mat-form-field class="full-width-input" appearance="outline">
+                        <input matInput placeholder="Year" formControlName="established_in">
+                        <mat-error class="error">When was it established (Year) is Required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="form-group mb-2">
+                      <h6>Why was it established?*</h6>
+                      <textarea placeholder="Type Here" formControlName="established_for" cols="50"
+                        rows="3"> </textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                      <h6>Outline the ways your Organisation contributes to the Community</h6>
+                      <textarea placeholder="Type Here" formControlName="org_contribution_detail" cols="50"
+                        rows="3"> </textarea>
+                    </div>
+                    <h3>Promotional & Communication Channels</h3>
+                    <div class="form-group">
+                      <h6>Your Website</h6>
+                      <mat-form-field class="full-width-input" appearance="outline">
+                        <input matInput placeholder="http://" formControlName="website">
+                        <mat-error class="error">Your Website is Required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                      <h6>Facebook</h6>
+                      <mat-form-field class="full-width-input with_logo" appearance="outline">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M31.1488 0H4.85111C2.17197 0 0 2.17186 0 4.85107V31.1488C0 33.828 2.17188 35.9998 4.85111 35.9998H17.821L17.8431 23.1354H14.5009C14.0666 23.1354 13.7141 22.7842 13.7124 22.3499L13.6964 18.2032C13.6947 17.7665 14.0483 17.4115 14.485 17.4115H17.8211V13.4048C17.8211 8.75492 20.661 6.22304 24.8089 6.22304H28.2127C28.6482 6.22304 29.0013 6.57609 29.0013 7.01166V10.5082C29.0013 10.9436 28.6484 11.2966 28.2131 11.2968L26.1243 11.2978C23.8685 11.2978 23.4317 12.3697 23.4317 13.9428V17.4116H28.3885C28.8608 17.4116 29.2272 17.824 29.1716 18.2931L28.6801 22.4398C28.633 22.8366 28.2965 23.1356 27.897 23.1356H23.4538L23.4317 36H31.149C33.8281 36 36 33.8281 36 31.149V4.85107C35.9999 2.17186 33.828 0 31.1488 0Z"
+                            fill="#475993" />
+                        </svg>
+                        <input matInput placeholder="" formControlName="facebook_page">
+                        <mat-error class="error">Facebook is Required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                      <h6>Twitter</h6>
+                      <mat-form-field class="full-width-input with_logo" appearance="outline">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M30.9996 0.000244141H5C2.23858 0.000244141 0 2.23882 0 5.00024V30.9998C0 33.7613 2.23857 35.9998 4.99999 35.9998H30.9996C33.761 35.9998 35.9996 33.7613 35.9996 30.9998V5.00024C35.9996 2.23882 33.761 0.000244141 30.9996 0.000244141Z"
+                            fill="#50ABF1" />
+                          <path
+                            d="M4.76908 26.6859C7.16494 28.2054 10.007 29.0848 13.0535 29.0848C21.6123 29.0848 28.5503 22.146 28.5503 13.5879C28.5503 13.3743 28.5458 13.1622 28.5376 12.9507C28.8472 12.7071 30.7618 11.1725 31.2311 10.1859C31.2311 10.1859 29.6763 10.8321 28.1546 10.9843C28.1516 10.9843 28.1479 10.985 28.1449 10.985C28.1449 10.985 28.1479 10.9835 28.1531 10.9798C28.2933 10.8861 30.2536 9.55171 30.519 7.96174C30.519 7.96174 29.4193 8.54873 27.8794 9.06227C27.6245 9.14695 27.3577 9.23021 27.0826 9.30738C26.09 8.24809 24.6792 7.58691 23.1132 7.58691C20.1093 7.58691 17.6752 10.0203 17.6752 13.0219C17.6752 13.4454 17.7239 13.8577 17.8161 14.2535C17.3964 14.2363 11.004 13.8779 6.65528 8.61161C6.65528 8.61161 4.05625 12.1597 8.20409 15.8083C8.20409 15.8083 6.94321 15.758 5.85539 15.1081C5.85539 15.1081 5.45584 19.4066 10.1532 20.5056C10.1532 20.5056 9.22887 20.8557 7.75431 20.6061C7.75431 20.6061 8.57891 24.0792 12.7523 24.4038C12.7523 24.4038 9.45218 27.385 4.76758 26.6855L4.76908 26.6859Z"
+                            fill="white" />
+                        </svg>
+                        <input matInput placeholder="" formControlName="twitter_id">
+                        <mat-error class="error">Twitter is Required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                      <h6>Instagram</h6>
+                      <mat-form-field class="full-width-input with_logo" appearance="outline">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M25.2754 0H10.7246C4.81103 0 0 4.81103 0 10.7246V25.2754C0 31.189 4.81103 36 10.7246 36H25.2754C31.189 36 36 31.189 36 25.2754V10.7246C35.9999 4.81103 31.1889 0 25.2754 0ZM32.3784 25.2754C32.3784 29.1982 29.1982 32.3784 25.2754 32.3784H10.7246C6.80175 32.3784 3.6216 29.1982 3.6216 25.2754V10.7246C3.6216 6.80169 6.80175 3.6216 10.7246 3.6216H25.2754C29.1982 3.6216 32.3784 6.80169 32.3784 10.7246V25.2754Z"
+                            fill="url(#paint0_linear)" />
+                          <path
+                            d="M18 8.68912C12.866 8.68912 8.68912 12.866 8.68912 17.9999C8.68912 23.1339 12.866 27.3108 18 27.3108C23.134 27.3108 27.3109 23.134 27.3109 17.9999C27.3109 12.8659 23.134 8.68912 18 8.68912ZM18 23.6893C14.8579 23.6893 12.3107 21.1421 12.3107 18C12.3107 14.8579 14.8579 12.3107 18 12.3107C21.1421 12.3107 23.6893 14.8579 23.6893 18C23.6893 21.1421 21.1421 23.6893 18 23.6893Z"
+                            fill="url(#paint1_linear)" />
+                          <path
+                            d="M27.3289 10.9901C28.5611 10.9901 29.56 9.99121 29.56 8.75902C29.56 7.52683 28.5611 6.52795 27.3289 6.52795C26.0967 6.52795 25.0978 7.52683 25.0978 8.75902C25.0978 9.99121 26.0967 10.9901 27.3289 10.9901Z"
+                            fill="url(#paint2_linear)" />
+                          <defs>
+                            <linearGradient id="paint0_linear" x1="27.3289" y1="35.8952" x2="27.3289" y2="0.279622"
+                              gradientUnits="userSpaceOnUse">
+                              <stop stop-color="#E09B3D" />
+                              <stop offset="0.3" stop-color="#C74C4D" />
+                              <stop offset="0.6" stop-color="#C21975" />
+                              <stop offset="1" stop-color="#7024C4" />
+                            </linearGradient>
+                            <linearGradient id="paint1_linear" x1="27.3289" y1="35.8952" x2="27.3289" y2="0.279622"
+                              gradientUnits="userSpaceOnUse">
+                              <stop stop-color="#E09B3D" />
+                              <stop offset="0.3" stop-color="#C74C4D" />
+                              <stop offset="0.6" stop-color="#C21975" />
+                              <stop offset="1" stop-color="#7024C4" />
+                            </linearGradient>
+                            <linearGradient id="paint2_linear" x1="27.3289" y1="35.8952" x2="27.3289" y2="0.279622"
+                              gradientUnits="userSpaceOnUse">
+                              <stop stop-color="#E09B3D" />
+                              <stop offset="0.3" stop-color="#C74C4D" />
+                              <stop offset="0.6" stop-color="#C21975" />
+                              <stop offset="1" stop-color="#7024C4" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                        <input matInput placeholder="" formControlName="instagram">
+                        <mat-error class="error">Instagram is Required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <h3>Key Statistics*</h3>
+                    <div class="form-group">
+                      <h6>Number of Registered Members</h6>
+                      <mat-form-field class="full-width-input" appearance="outline">
+                        <input matInput placeholder="Type here" formControlName="number_of_registered_member">
+                        <mat-error class="error">Number of Registered Members is Required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                      <h6>Number of Players</h6>
+                      <mat-form-field class="full-width-input" appearance="outline">
+                        <input matInput placeholder="Type here" formControlName="number_of_player">
+                        <mat-error class="error">Number of Players is Required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                      <h6>Number of Coaches/Trainers</h6>
+                      <mat-form-field class="full-width-input" appearance="outline">
+                        <input matInput placeholder="Type here" formControlName="number_of_trainers">
+                        <mat-error class="error">Number of Coaches/Trainers is Required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                      <h6>Number of Teams</h6>
+                      <mat-form-field class="full-width-input" appearance="outline">
+                        <input matInput placeholder="Type here" formControlName="number_of_teams">
+                        <mat-error class="error">Number of Teams is Required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                      <h6>Number of Volunteers</h6>
+                      <mat-form-field class="full-width-input" appearance="outline">
+                        <input matInput placeholder="Type here" formControlName="number_of_volunteers">
+                        <mat-error class="error">Number of Volunteers is Required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                      <h6>Number of Winners</h6>
+                      <mat-form-field class="full-width-input" appearance="outline">
+                        <input matInput placeholder="Type here" formControlName="number_of_winners">
+                        <mat-error class="error">Number of Winners is Required.</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="save_btn col-12">
+                    <button mat-raised-button class="button-submit" type="button" [disabled]="btn_disable"
+                      (click)="update()">Save</button>
+                    <button class="button-submit" type="button" (click)="goTo(3)">Previous</button>
+                    <button type="button" mat-raised-button class="button-submit cancle_btn" mat-button
+                      (click)="onNoClick()">Cancel</button>
+                  </div>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </form>
+        </div>
+      </div>
+      <div class="col-xl-2">
+        <div class="upload_player">
+          <h6>Upload Advance Sales</h6>
+          <button mat-button class="button-submit playbtn" (click)="openUploadModal()"> Upload File(xlsx) </button>
+          <button mat-button class="button-submit" (click)="downloadTemplate()"> Download Template</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
